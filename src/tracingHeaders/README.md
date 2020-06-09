@@ -11,7 +11,7 @@ This add-on deals with [RFC002 request tracing](https://github.com/SEEK-Jobs/rfc
 ## Usage
 
 ```typescript
-import { TracingHeaders } from '@seek/koala';
+import { TracingHeaders } from 'seek-koala';
 
 // Get our incoming tracing information
 const tracing = TracingHeaders.tracingFromContext(ctx);

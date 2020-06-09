@@ -28,7 +28,7 @@ See the [TracingHeaders add-on](../tracingHeaders/README.md) for more informatio
 ```typescript
 // This example uses pino. See the next section for a Bunyan example.
 import pino from 'pino';
-import { RequestLogging } from '@seek/koala';
+import { RequestLogging } from 'seek-koala';
 
 // Create a root logger with the app name and version
 const rootLogger = pino({
@@ -88,7 +88,7 @@ This is a convenience that shouldn't be used as a replacement for error handling
 ```typescript
 // This example uses Bunyan. See the previous section for a pino example.
 import bunyan from 'bunyan';
-import { RequestLogging } from '@seek/koala';
+import { RequestLogging } from 'seek-koala';
 
 const logger = bunyan.createLogger({
   name: appConfig.name,

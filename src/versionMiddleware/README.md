@@ -18,7 +18,7 @@ It attaches two headers:
 ## Usage
 
 ```typescript
-import { VersionMiddleware } from '@seek/koala';
+import { VersionMiddleware } from 'seek-koala';
 
 // Pass an appID with our name and version
 const appID = {
