@@ -1,0 +1,8 @@
+{
+  "extends": "@seek/seek-module-toolkit/config/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*"]
+}
