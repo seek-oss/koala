@@ -26,7 +26,7 @@ Because Koa has no built-in routing support the method of getting the route name
 
 ```typescript
 import { StatsD } from 'hot-shots';
-import { MetricsMiddleware } from '@seek/koala';
+import { MetricsMiddleware } from 'seek-koala';
 
 const metricsClient = new StatsD({
   prefix: 'ca-example-service',

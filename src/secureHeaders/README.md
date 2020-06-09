@@ -18,7 +18,7 @@ If the above conditions are not met then the app should send customised security
 ## Usage
 
 ```typescript
-import { SecureHeaders } from '@seek/koala';
+import { SecureHeaders } from 'seek-koala';
 
 // Opt-in to strict browser security
 app.use(SecureHeaders.middleware);

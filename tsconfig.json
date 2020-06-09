@@ -1,8 +1,10 @@
 {
-  "extends": "@seek/seek-module-toolkit/config/tsconfig.json",
   "compilerOptions": {
-    "outDir": "dist",
-    "moduleResolution": "node"
+    "declaration": true,
+    "moduleResolution": "node",
+    "outDir": "lib",
+    "removeComments": false
   },
-  "include": ["src/**/*"]
+  "exclude": ["lib/**/*"],
+  "extends": "skuba/config/tsconfig.json"
 }
