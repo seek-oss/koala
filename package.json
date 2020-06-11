@@ -13,7 +13,7 @@
     "hot-shots": "7.5.0",
     "koa": "2.12.0",
     "semantic-release": "17.0.8",
-    "skuba": "3.5.0-beta.2"
+    "skuba": "3.6.0"
   },
   "engines": {
     "node": ">=10.7"

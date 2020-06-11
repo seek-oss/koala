@@ -13,12 +13,14 @@ Refer to the [Koala manifesto](CONTRIBUTING.md) for philosophy behind Koala.
 
 ## Included Add-Ons
 
-1. **[MetricsMiddleware](./src/metricsMiddleware/README.md)** uses [hot-shots](https://github.com/brightcove/hot-shots) to record Datadog metrics about requests and their response codes.
+- **[AsyncMiddleware](./src/asyncMiddleware/README.md)** facilitates lazy loading of an asynchronously-initialised middleware.
 
-2. **[RequestLogging](./src/requestLogging/README.md)** facilitates logging information about requests and responses.
+- **[MetricsMiddleware](./src/metricsMiddleware/README.md)** uses [hot-shots](https://github.com/brightcove/hot-shots) to record Datadog metrics about requests and their response codes.
 
-3. **[SecureHeaders](./src/secureHeaders/README.md)** attaches response headers that opt-in to stricter browser security policies.
+- **[RequestLogging](./src/requestLogging/README.md)** facilitates logging information about requests and responses.
 
-4. **[TracingHeaders](./src/tracingHeaders/README.md)** deals with [RFC002 request tracing](https://github.com/SEEK-Jobs/rfc/blob/master/RFC002-RequestIds.md) and `User-Agent` headers.
+- **[SecureHeaders](./src/secureHeaders/README.md)** attaches response headers that opt-in to stricter browser security policies.
 
-5. **[VersionMiddleware](./src/versionMiddleware/README.md)** attaches app version information to outgoing responses.
+- **[TracingHeaders](./src/tracingHeaders/README.md)** deals with [RFC002 request tracing](https://github.com/SEEK-Jobs/rfc/blob/master/RFC002-RequestIds.md) and `User-Agent` headers.
+
+- **[VersionMiddleware](./src/versionMiddleware/README.md)** attaches app version information to outgoing responses.
