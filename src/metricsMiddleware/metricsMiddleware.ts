@@ -1,5 +1,6 @@
-import { StatsD } from 'hot-shots';
 import Koa from 'koa';
+
+import { StatsD } from './statsD';
 
 /**
  * Returns metrics tags for the passed Koa context
@@ -53,12 +54,7 @@ export const create = (
       const durationNanos = process.hrtime.bigint() - startTime;
 
       if (!ctx.state.skipRequestLogging) {
-        metricsClient.timing(
-          'request',
-          Number(durationNanos) / 1e6,
-          undefined,
-          tags,
-        );
+        metricsClient.timing('request', Number(durationNanos) / 1e6, tags);
       }
     }
   };
