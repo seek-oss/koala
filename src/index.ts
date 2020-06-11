@@ -1,14 +1,8 @@
-import * as MetricsMiddleware from './metricsMiddleware/metricsMiddleware';
-import * as RequestLogging from './requestLogging/requestLogging';
-import * as SecureHeaders from './secureHeaders/secureHeaders';
-import * as TracingHeaders from './tracingHeaders/tracingHeaders';
-import * as VersionMiddleware from './versionMiddleware/versionMiddleware';
+export * as AsyncMiddleware from './asyncMiddleware/asyncMiddleware';
+export * as MetricsMiddleware from './metricsMiddleware/metricsMiddleware';
+export * as RequestLogging from './requestLogging/requestLogging';
+export * as SecureHeaders from './secureHeaders/secureHeaders';
+export * as TracingHeaders from './tracingHeaders/tracingHeaders';
+export * as VersionMiddleware from './versionMiddleware/versionMiddleware';
 
 export { AppIdentifier } from './types';
-export {
-  MetricsMiddleware,
-  RequestLogging,
-  SecureHeaders,
-  TracingHeaders,
-  VersionMiddleware,
-};
