@@ -29,10 +29,9 @@ describe('metricsMiddleware', () => {
 
     expect(mockTiming).toHaveBeenCalledTimes(1);
 
-    const [name, latency, sample, tags] = mockTiming.mock.calls[0] as unknown[];
+    const [name, latency, tags] = mockTiming.mock.calls[0] as unknown[];
     expect(name).toBe('request');
     expect(latency).toBeGreaterThanOrEqual(0);
-    expect(sample).toBeUndefined();
     expect(tags).toEqual({
       http_status: '201',
       http_status_family: '2xx',
@@ -61,10 +60,9 @@ describe('metricsMiddleware', () => {
 
     expect(mockTiming).toHaveBeenCalledTimes(1);
 
-    const [name, latency, sample, tags] = mockTiming.mock.calls[0] as unknown[];
+    const [name, latency, tags] = mockTiming.mock.calls[0] as unknown[];
     expect(name).toBe('request');
     expect(latency).toBeGreaterThanOrEqual(0);
-    expect(sample).toBeUndefined();
     expect(tags).toEqual({
       http_status: '500',
       http_status_family: '5xx',
