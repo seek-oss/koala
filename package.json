@@ -31,6 +31,11 @@
     "hot-shots": "5.x || 6.x || 7.x",
     "koa": "2"
   },
+  "peerDependenciesMeta": {
+    "hot-shots": {
+      "optional": true
+    }
+  },
   "private": false,
   "repository": {
     "type": "git",
