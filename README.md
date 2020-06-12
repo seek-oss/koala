@@ -11,6 +11,10 @@
 Koala is a collection of Koa add-ons intended to make it easy to follow common SEEK conventions around tracing, logging and metrics.
 Refer to the [Koala manifesto](CONTRIBUTING.md) for philosophy behind Koala.
 
+```shell
+yarn add seek-koala
+```
+
 ## Included Add-Ons
 
 - **[AsyncMiddleware](./src/asyncMiddleware/README.md)** facilitates lazy loading of an asynchronously-initialised middleware.
