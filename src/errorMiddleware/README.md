@@ -10,12 +10,6 @@ This tries to extract a numeric error `status` to serve as the response status,
 and will set the error message as the response body for non-5xx statuses.
 It works well with Koa's built-in `ctx.throw`.
 
-All caught errors are emitted to the `error` event:
-
-```javascript
-app.on('error', (err, ctx) => {});
-```
-
 This should be placed high up the middleware chain so that errors from lower middleware are handled.
 It also serves to set the correct `ctx.status` for middleware that emit logs or metrics containing the response status.
 

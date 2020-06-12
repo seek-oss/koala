@@ -5,13 +5,10 @@ import { agentFromApp } from '../testing/server';
 import { handle, thrown } from './errorMiddleware';
 
 describe('errorMiddleware', () => {
-  const listener = jest.fn();
   const mockPrev = jest.fn<unknown, [Koa.Context, Koa.Next]>();
   const mockNext = jest.fn<unknown, [Koa.Context, Koa.Next]>();
 
   const app = new Koa().use(mockPrev).use(handle).use(mockNext);
-
-  app.on('error', listener);
 
   const agent = agentFromApp(app);
 
@@ -19,7 +16,6 @@ describe('errorMiddleware', () => {
 
   beforeEach(() => mockPrev.mockImplementation((_, next) => next()));
 
-  afterEach(listener.mockReset);
   afterEach(mockPrev.mockReset);
   afterEach(mockNext.mockReset);
 
@@ -32,8 +28,6 @@ describe('errorMiddleware', () => {
     });
 
     await agent().get('/').expect(200, 'good');
-
-    expect(listener).not.toHaveBeenCalled();
   });
 
   it('passes through a returned 5xx', async () => {
@@ -43,8 +37,6 @@ describe('errorMiddleware', () => {
     });
 
     await agent().get('/').expect(500, 'evil');
-
-    expect(listener).not.toHaveBeenCalled();
   });
 
   it('provides thrown error to higher middleware', async () => {
@@ -61,8 +53,6 @@ describe('errorMiddleware', () => {
     });
 
     await agent().get('/').expect(400, 'bad');
-
-    expect(listener).toHaveBeenCalledTimes(1);
   });
 
   it('exposes a thrown 4xx error', async () => {
@@ -71,8 +61,6 @@ describe('errorMiddleware', () => {
     });
 
     await agent().get('/').expect(400, 'bad');
-
-    expect(listener).toHaveBeenCalledTimes(1);
   });
 
   it('redacts a thrown 5xx error', async () => {
@@ -81,8 +69,6 @@ describe('errorMiddleware', () => {
     });
 
     await agent().get('/').expect(500, '');
-
-    expect(listener).toHaveBeenCalledTimes(1);
   });
 
   it('handles directly-thrown error', async () => {
@@ -91,8 +77,6 @@ describe('errorMiddleware', () => {
     });
 
     await agent().get('/').expect(500, '');
-
-    expect(listener).toHaveBeenCalledTimes(1);
   });
 
   it('handles null error', async () => {
@@ -102,8 +86,6 @@ describe('errorMiddleware', () => {
     });
 
     await agent().get('/').expect(500, '');
-
-    expect(listener).toHaveBeenCalledTimes(1);
   });
 
   it('handles string error', async () => {
@@ -113,7 +95,5 @@ describe('errorMiddleware', () => {
     });
 
     await agent().get('/').expect(500, '');
-
-    expect(listener).toHaveBeenCalledTimes(1);
   });
 });
