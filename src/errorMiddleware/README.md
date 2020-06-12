@@ -1,0 +1,44 @@
+# 🐨 Error Middleware 🐨
+
+## Introduction
+
+Catches errors thrown from downstream middleware, as specified here:
+
+<https://github.com/koajs/koa/wiki/Error-Handling#catching-downstream-errors>
+
+This tries to extract a numeric error `status` to serve as the response status,
+and will set the error message as the response body for non-5xx statuses.
+It works well with Koa's built-in `ctx.throw`.
+
+All caught errors are emitted to the `error` event:
+
+```javascript
+app.on('error', (err, ctx) => {});
+```
+
+This should be placed high up the middleware chain so that errors from lower middleware are handled.
+It also serves to set the correct `ctx.status` for middleware that emit logs or metrics containing the response status.
+
+## Usage
+
+```typescript
+import { ErrorMiddleware, RequestLoggingMiddleware } from 'seek-koala';
+
+const requestLoggingMiddleware = RequestLogging.createMiddleware(
+  (ctx, fields, err) => {
+    const data = {
+      ...fields,
+      err: err ?? ErrorMiddleware.thrown(ctx),
+    };
+
+    return ctx.status < 500
+      ? rootLogger.info(data, 'request')
+      : rootLogger.error(data, 'request');
+  },
+);
+
+app
+  .use(requestLoggingMiddleware)
+  .use(metricsMiddleware)
+  .use(ErrorMiddleware.handle);
+```

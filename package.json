@@ -8,12 +8,14 @@
   "description": "Koa add-ons for SEEK-standard tracing, logging and metrics",
   "devDependencies": {
     "@types/koa": "2.11.3",
+    "@types/supertest": "2.0.9",
     "@types/uuid": "8.0.0",
     "eslint-plugin-tsdoc": "0.2.5",
     "hot-shots": "7.5.0",
     "koa": "2.12.0",
     "semantic-release": "17.0.8",
-    "skuba": "3.6.0"
+    "skuba": "3.6.0",
+    "supertest": "4.0.2"
   },
   "engines": {
     "node": ">=10.7"

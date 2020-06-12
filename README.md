@@ -15,6 +15,8 @@ Refer to the [Koala manifesto](CONTRIBUTING.md) for philosophy behind Koala.
 
 - **[AsyncMiddleware](./src/asyncMiddleware/README.md)** facilitates lazy loading of an asynchronously-initialised middleware.
 
+- **[ErrorMiddleware](./src/errorMiddleware/README.md)** catches errors from downstream middleware.
+
 - **[MetricsMiddleware](./src/metricsMiddleware/README.md)** uses [hot-shots](https://github.com/brightcove/hot-shots) to record Datadog metrics about requests and their response codes.
 
 - **[RequestLogging](./src/requestLogging/README.md)** facilitates logging information about requests and responses.

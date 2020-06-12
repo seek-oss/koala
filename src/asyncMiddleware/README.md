@@ -4,7 +4,7 @@
 
 This add-on wraps an asynchronously-initialised middleware to allow it to be synchronously attached to a Koa application.
 This is useful if you want to keep the initialisation of your Koa application synchronous for simplicity and interoperability with tooling like [Koa Cluster],
-but you need to perform asynchronous work like [GraphQL schema introspection] in order to build one of the middlewares in your chain.
+but you need to perform asynchronous work like [GraphQL schema introspection] in order to build one of the middleware in your chain.
 
 [koa cluster]: https://github.com/koajs/cluster
 [graphql schema introspection]: https://graphql.org/learn/introspection/
