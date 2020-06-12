@@ -40,7 +40,7 @@ describe('errorMiddleware', () => {
   });
 
   it('provides thrown error to higher middleware', async () => {
-    expect.assertions(2);
+    expect.assertions(1);
 
     mockPrev.mockImplementation(async (ctx, next) => {
       await next();
