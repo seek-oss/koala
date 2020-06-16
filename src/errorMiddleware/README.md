@@ -36,3 +36,21 @@ app
   .use(metricsMiddleware)
   .use(ErrorMiddleware.handle);
 ```
+
+## JsonErrorResponse
+
+`JsonErrorResponse` is a custom error type used by `handle` to support JSON error response bodies.
+Its constructor takes a `message` string and a `body` JavaScript value.
+If the request accepts JSON then the error response will include the JSON encoded `body`.
+
+```typescript
+import { ErrorMiddleware } from 'seek-koala';
+
+ctx.throw(
+  400,
+  new ErrorMiddleware.JsonErrorResponse('Bad input', {
+    message: 'Bad input',
+    invalidFields: { '/path/to/field': 'Value out of range' },
+  }),
+);
+```
