@@ -2,7 +2,7 @@ import Koa from 'koa';
 
 import { agentFromApp } from '../testing/server';
 
-import { handle, thrown } from './errorMiddleware';
+import { JsonResponse, handle, thrown } from './errorMiddleware';
 
 describe('errorMiddleware', () => {
   const mockPrev = jest.fn<unknown, [Koa.Context, Koa.Next]>();
@@ -66,6 +66,41 @@ describe('errorMiddleware', () => {
   it('redacts a thrown 5xx error', async () => {
     mockNext.mockImplementation((ctx) => {
       ctx.throw(500, 'bad');
+    });
+
+    await agent().get('/').expect(500, '');
+  });
+
+  it('exposes a thrown 4xx `JsonResponse` as JSON by default', async () => {
+    mockNext.mockImplementation((ctx) => {
+      ctx.throw(400, new JsonResponse('Bad input', { bad: true }));
+    });
+
+    await agent().get('/').expect(400, { bad: true });
+  });
+
+  it('exposes a thrown 4xx `JsonResponse` as JSON based on `Accept`', async () => {
+    mockNext.mockImplementation((ctx) => {
+      ctx.throw(403, new JsonResponse('No access', { access: false }));
+    });
+
+    await agent()
+      .get('/')
+      .set('Accept', 'application/json')
+      .expect(403, { access: false });
+  });
+
+  it('exposes a thrown 4xx `JsonResponse` as text based on `Accept`', async () => {
+    mockNext.mockImplementation((ctx) => {
+      ctx.throw(410, new JsonResponse('Gone away', { gone: true }));
+    });
+
+    await agent().get('/').set('Accept', 'text/plain').expect(410, 'Gone away');
+  });
+
+  it('redact a thrown 5xx `JsonResponse`', async () => {
+    mockNext.mockImplementation((ctx) => {
+      ctx.throw(500, new JsonResponse('Bad input', { bad: true }));
     });
 
     await agent().get('/').expect(500, '');

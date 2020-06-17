@@ -9,6 +9,34 @@ const isObject = (value: unknown): value is Record<PropertyKey, unknown> =>
   typeof value === 'object' && value !== null;
 
 /**
+ * Custom error type supporting JSON response bodies
+ *
+ * The `handle` middleware will return either `message` or `body` depending on
+ * the request's `Accept` header.
+ *
+ * ```javascript
+ * ctx.throw(400, new JsonResponse('Invalid input', { fieldName: '/foo' }));
+ * ```
+ */
+export class JsonResponse extends Error {
+  /**
+   * Creates a new `JsonResponse`
+   *
+   * This must be passed to `ctx.throw` instead of being thrown directly.
+   *
+   * @param message - Plain text message used for requests preferring
+   *                  `text/plain`. This is also used as the `Error` superclass
+   *                  message.
+   *
+   * @param body - JavaScript value used for requests accepting
+   *               `application/json`. This is encoded as JSON in the response.
+   */
+  constructor(message: string, public body: unknown) {
+    super(message);
+  }
+}
+
+/**
  * Catches errors thrown from downstream middleware, as specified here:
  *
  * https://github.com/koajs/koa/wiki/Error-Handling#catching-downstream-errors
@@ -16,6 +44,10 @@ const isObject = (value: unknown): value is Record<PropertyKey, unknown> =>
  * This tries to extract a numeric error `status` to serve as the response
  * status, and will set the error message as the response body for non-5xx
  * statuses. It works well with Koa's built-in `ctx.throw`.
+ *
+ * This includes a specific check for the `JsonResponse` class to support
+ * including a JSON response body. If the request accepts `application/json`
+ * the error's `body` will be returned, otherwise its plain text `message`.
  *
  * This should be placed high up the middleware chain so that errors from lower
  * middleware are handled. It also serves to set the correct `ctx.status` for
@@ -43,7 +75,18 @@ export const handle: Middleware = async (ctx, next) => {
     }
 
     ctx.status = err.status;
-    ctx.body = (err.status < 500 && err.message) || '';
+    const expose = err.status < 500;
+
+    if (
+      expose &&
+      err instanceof JsonResponse &&
+      // Prefer JSON ourselves if the request has no preference
+      ctx.accepts(['application/json', 'text/plain']) === 'application/json'
+    ) {
+      ctx.body = err.body;
+    } else {
+      ctx.body = (expose && err.message) || '';
+    }
   }
 };
 
