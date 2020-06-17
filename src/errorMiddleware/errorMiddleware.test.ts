@@ -98,7 +98,7 @@ describe('errorMiddleware', () => {
     await agent().get('/').set('Accept', 'text/plain').expect(410, 'Gone away');
   });
 
-  it('redact a thrown 5xx `JsonErrorResponse`', async () => {
+  it('redact a thrown 5xx `JsonResponse`', async () => {
     mockNext.mockImplementation((ctx) => {
       ctx.throw(500, new JsonResponse('Bad input', { bad: true }));
     });
