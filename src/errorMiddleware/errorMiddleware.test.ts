@@ -2,7 +2,7 @@ import Koa from 'koa';
 
 import { agentFromApp } from '../testing/server';
 
-import { JsonErrorResponse, handle, thrown } from './errorMiddleware';
+import { JsonResponse, handle, thrown } from './errorMiddleware';
 
 describe('errorMiddleware', () => {
   const mockPrev = jest.fn<unknown, [Koa.Context, Koa.Next]>();
@@ -71,17 +71,17 @@ describe('errorMiddleware', () => {
     await agent().get('/').expect(500, '');
   });
 
-  it('exposes a thrown 4xx `JsonErrorResponse` as JSON by default', async () => {
+  it('exposes a thrown 4xx `JsonResponse` as JSON by default', async () => {
     mockNext.mockImplementation((ctx) => {
-      ctx.throw(400, new JsonErrorResponse('Bad input', { bad: true }));
+      ctx.throw(400, new JsonResponse('Bad input', { bad: true }));
     });
 
     await agent().get('/').expect(400, { bad: true });
   });
 
-  it('exposes a thrown 4xx `JsonErrorResponse` as JSON based on `Accept`', async () => {
+  it('exposes a thrown 4xx `JsonResponse` as JSON based on `Accept`', async () => {
     mockNext.mockImplementation((ctx) => {
-      ctx.throw(403, new JsonErrorResponse('No access', { access: false }));
+      ctx.throw(403, new JsonResponse('No access', { access: false }));
     });
 
     await agent()
@@ -90,9 +90,9 @@ describe('errorMiddleware', () => {
       .expect(403, { access: false });
   });
 
-  it('exposes a thrown 4xx `JsonErrorResponse` as text based on `Accept`', async () => {
+  it('exposes a thrown 4xx `JsonResponse` as text based on `Accept`', async () => {
     mockNext.mockImplementation((ctx) => {
-      ctx.throw(410, new JsonErrorResponse('Gone away', { gone: true }));
+      ctx.throw(410, new JsonResponse('Gone away', { gone: true }));
     });
 
     await agent().get('/').set('Accept', 'text/plain').expect(410, 'Gone away');
@@ -100,7 +100,7 @@ describe('errorMiddleware', () => {
 
   it('redact a thrown 5xx `JsonErrorResponse`', async () => {
     mockNext.mockImplementation((ctx) => {
-      ctx.throw(500, new JsonErrorResponse('Bad input', { bad: true }));
+      ctx.throw(500, new JsonResponse('Bad input', { bad: true }));
     });
 
     await agent().get('/').expect(500, '');

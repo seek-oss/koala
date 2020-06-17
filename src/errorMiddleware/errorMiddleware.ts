@@ -15,12 +15,12 @@ const isObject = (value: unknown): value is Record<PropertyKey, unknown> =>
  * the request's `Accept` header.
  *
  * ```javascript
- * ctx.throw(400, new JsonErrorResponse('Invalid input', { fieldName: '/foo' }));
+ * ctx.throw(400, new JsonResponse('Invalid input', { fieldName: '/foo' }));
  * ```
  */
-export class JsonErrorResponse extends Error {
+export class JsonResponse extends Error {
   /**
-   * Creates a new `JsonErrorResponse`
+   * Creates a new `JsonResponse`
    *
    * This must be passed to `ctx.throw` instead of being thrown directly.
    *
@@ -45,7 +45,7 @@ export class JsonErrorResponse extends Error {
  * status, and will set the error message as the response body for non-5xx
  * statuses. It works well with Koa's built-in `ctx.throw`.
  *
- * This includes a specific check for the `JsonErrorResponse` class to support
+ * This includes a specific check for the `JsonResponse` class to support
  * including a JSON response body. If the request accepts `application/json`
  * the error's `body` will be returned, otherwise its plain text `message`.
  *
@@ -79,7 +79,7 @@ export const handle: Middleware = async (ctx, next) => {
 
     if (
       expose &&
-      err instanceof JsonErrorResponse &&
+      err instanceof JsonResponse &&
       // Prefer JSON ourselves if the request has no preference
       ctx.accepts(['application/json', 'text/plain']) === 'application/json'
     ) {
