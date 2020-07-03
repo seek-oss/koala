@@ -44,12 +44,13 @@ yarn add seek-koala
 - **Koala does not wrap other packages**
 
   The objects and types of JavaScript packages such as [Axios](https://github.com/axios/axios) and [hot-shots](https://github.com/brightcove/hot-shots) should be used directly.
-  While Koala may provide constructors for objects from those packages developers should always be able to "bring their own instance".
+  While Koala may provide constructors for objects from those packages,
+  developers should always be able to "bring their own instance".
 
 - **Koala does not contain policy**
 
   It does not enforce timeouts, set caching headers, expect certain error objects, etc.
-  Whenever a default policy is unavoidable it should be called out in the documentation and be made configurable.
+  Whenever a default policy is unavoidable it should be called out in the documentation and made configurable.
 
 - **Koala modules should be usable in isolation**
 
@@ -63,5 +64,5 @@ yarn add seek-koala
 
 - **Koala is not a dumping ground**
 
-  It strictly contains functionality related to developing Koa web services within SEEK.
+  It strictly contains functionality related to developing Koa web services at SEEK.
   It should not include features only relevant to a single application or team.
