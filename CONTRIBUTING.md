@@ -2,8 +2,9 @@
 
 Hi there, thanks for checking out our repo!
 
-**seek-datadog-custom-metrics** defines a common interface for sending Datadog custom metrics from Node.js runtime environments.
-It's a general-purpose package, so third-party contributions are more than welcome.
+**seek-koala** is a collection of Koa add-ons.
+It prescribes SEEK conventions but is otherwise a general-purpose package,
+so third-party contributions are more than welcome.
 
 SEEKers: this repo is public,
 so don't commit or post anything that isn't ready for the entire world to see.
@@ -24,9 +25,11 @@ so don't commit or post anything that isn't ready for the entire world to see.
 
 ## Getting started
 
-**seek-datadog-custom-metrics** is documented through its [README](/README.md).
+**seek-koala** is documented through its [README](/README.md).
 We maintain [release notes] on GitHub,
 and distribute it as an [npm package].
+
+Refer to the [Koala manifesto](#koala-manifesto) for philosophy behind Koala.
 
 ### I want to discuss or report something
 
@@ -88,7 +91,7 @@ If you don't have push access,
 you may need to [fork the repo] and push there instead:
 
 ```shell
-git remote add fork git@github.com:your-username/datadog-custom-metrics.git
+git remote add fork git@github.com:your-username/koala.git
 git push --set-upstream fork your-branch-name
 ```
 
@@ -121,7 +124,7 @@ yarn test
 
 ### Writing a semantic commit message
 
-Consider whether you are making a visible change to the public **seek-datadog-custom-metrics** interface,
+Consider whether you are making a visible change to the public **seek-koala** interface,
 which includes:
 
 - Top-level exports from [src/index.ts](/src/index.ts)
@@ -165,12 +168,12 @@ Commits should follow the [Conventional Commits] spec for [semantic versioning]:
   Note that the `fix` type could be anything;
   the `BREAKING CHANGE:` prefix in the commit body is what determines the release as major.
 
-Specifying a scope makes it easy to eyeball which part of **seek-datadog-custom-metrics** a change relates to:
+Specifying a scope makes it easy to eyeball which part of **seek-koala** a change relates to:
 
 ```text
 chore(docs): Update README
 
-fix(CloudWatchClient): Improve tag sanitisation
+fix(RequestLogging): Redact x-authorization header
 ```
 
 ### Publishing a release
@@ -190,14 +193,15 @@ Simply push changes to the `beta` branch on GitHub.
 
 [#typescriptification]: https://seekchat.slack.com/channels/typescriptification
 [conventional commits]: https://www.conventionalcommits.org/en/v1.0.0-beta.2/
-[create a pull request]: https://github.com/seek-oss/datadog-custom-metrics/compare
+[create a pull request]: https://github.com/seek-oss/koala/compare
 [dist-tag]: https://docs.npmjs.com/cli/dist-tag
-[fork the repo]: https://github.com/seek-oss/datadog-custom-metrics/fork
-[npm package]: https://www.npmjs.com/package/seek-datadog-custom-metrics
-[release notes]: https://github.com/seek-oss/datadog-custom-metrics/releases
+[fork the repo]: https://github.com/seek-oss/koala/fork
+[npm package]: https://www.npmjs.com/package/seek-koala
+[koala manifesto]: https://github.com/seek-oss/koala#koala-manifesto
+[release notes]: https://github.com/seek-oss/koala/releases
 [semantic versioning]: https://semver.org/
 [semantic-release]: https://github.com/semantic-release/semantic-release
 [skuba]: https://github.com/seek-oss/skuba
 [squash our commits]: https://github.blog/2016-04-01-squash-your-commits/
-[submit an issue]: https://github.com/seek-oss/datadog-custom-metrics/issues/new/choose
+[submit an issue]: https://github.com/seek-oss/koala/issues/new/choose
 [windows subsystem for linux]: https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux
