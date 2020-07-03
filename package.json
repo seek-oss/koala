@@ -10,11 +10,10 @@
     "@types/koa": "2.11.3",
     "@types/supertest": "2.0.9",
     "@types/uuid": "8.0.0",
-    "eslint-plugin-tsdoc": "0.2.5",
     "hot-shots": "7.5.0",
     "koa": "2.12.0",
     "semantic-release": "17.0.8",
-    "skuba": "3.6.0",
+    "skuba": "3.7.3",
     "supertest": "4.0.2"
   },
   "engines": {
@@ -28,6 +27,7 @@
   "homepage": "https://github.com/seek-oss/koala#readme",
   "license": "MIT",
   "main": "./lib/index.js",
+  "module": "./lib/index.js",
   "name": "seek-koala",
   "peerDependencies": {
     "hot-shots": "5.x || 6.x || 7.x",
@@ -52,9 +52,10 @@
   },
   "sideEffects": false,
   "skuba": {
-    "entryPoint": null,
+    "entryPoint": "src/index.ts",
     "template": null,
-    "version": "3.5.0-beta.2"
+    "type": "package",
+    "version": "3.7.3"
   },
   "types": "./lib/index.d.ts",
   "version": "0.0.0-semantically-released"
