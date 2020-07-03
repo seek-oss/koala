@@ -5,6 +5,6 @@
     "outDir": "lib",
     "removeComments": false
   },
-  "exclude": ["lib/**/*"],
+  "exclude": ["lib*/**/*"],
   "extends": "skuba/config/tsconfig.json"
 }
