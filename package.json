@@ -12,7 +12,6 @@
     "@types/uuid": "8.0.0",
     "hot-shots": "7.7.1",
     "koa": "2.13.0",
-    "semantic-release": "17.0.8",
     "skuba": "3.7.3",
     "supertest": "4.0.2"
   },
@@ -47,7 +46,7 @@
     "build": "skuba build",
     "format": "skuba format",
     "lint": "skuba lint",
-    "release": "yarn build && semantic-release --success false",
+    "release": "yarn build && skuba release",
     "test": "skuba test --coverage"
   },
   "sideEffects": false,
