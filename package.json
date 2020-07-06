@@ -8,7 +8,7 @@
   "description": "Koa add-ons for SEEK-standard tracing, logging and metrics",
   "devDependencies": {
     "@types/koa": "2.11.3",
-    "@types/supertest": "2.0.9",
+    "@types/supertest": "2.0.10",
     "@types/uuid": "8.0.0",
     "hot-shots": "7.7.1",
     "koa": "2.13.0",
