@@ -56,4 +56,42 @@ describe('asyncMiddleware', () => {
 
     expect(createInnerMiddleware).toHaveBeenCalledTimes(2);
   });
+
+  it('should cache a new inner middleware on expired TTL', async () => {
+    const ctx: Koa.Context = makeCtx();
+    const ttl = 60_000;
+
+    const currentTime = jest.spyOn(Date, 'now');
+
+    const innerMiddleware = jest
+      .fn()
+      .mockImplementationOnce(() => (ctx.status = 201))
+      .mockImplementationOnce(() => (ctx.status = 202))
+      .mockImplementationOnce(() => (ctx.status = 203));
+    const init = jest.fn().mockResolvedValue(innerMiddleware);
+    const middleware = lazyLoad(init, ttl);
+
+    currentTime.mockReturnValue(0);
+
+    await expect(middleware(ctx, next)).resolves.toBe(201);
+    expect(ctx.status).toBe(201);
+
+    expect(init).toHaveBeenCalledTimes(1);
+    expect(innerMiddleware).toHaveBeenCalledTimes(1);
+
+    currentTime.mockReturnValue(1000);
+
+    await expect(middleware(ctx, next)).resolves.toBe(202);
+    expect(ctx.status).toBe(202);
+
+    expect(init).toHaveBeenCalledTimes(1);
+    expect(innerMiddleware).toHaveBeenCalledTimes(2);
+
+    currentTime.mockReturnValue(80_000);
+    await expect(middleware(ctx, next)).resolves.toBe(203);
+    expect(ctx.status).toBe(203);
+
+    expect(init).toHaveBeenCalledTimes(2);
+    expect(innerMiddleware).toHaveBeenCalledTimes(3);
+  });
 });
