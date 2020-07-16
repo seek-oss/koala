@@ -7,8 +7,10 @@ import { Middleware } from 'koa';
  * This lazy loads the function supplied through the `init` parameter at time of
  * request. If initialisation fails, the error is thrown up the chain for
  * in-flight requests, and initialisation is retried on the next request.
+ * If `ttl` is set, the middleware is re-initialised when cache expires.
  *
  * @param init  - Function to asynchronously initialise a middleware
+ * @param ttl - Time in ms
  */
 export const lazyLoad = <State, Context>(
   init: () => Promise<Middleware<State, Context>>,
