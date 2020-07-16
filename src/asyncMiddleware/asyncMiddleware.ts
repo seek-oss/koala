@@ -12,12 +12,16 @@ import { Middleware } from 'koa';
  */
 export const lazyLoad = <State, Context>(
   init: () => Promise<Middleware<State, Context>>,
+  ttl?: number,
 ): Middleware<State, Context> => {
   let cache: Promise<Middleware<State, Context>> | undefined;
+  let cacheTimestamp: number;
 
   const initOrInvalidate = async () => {
     try {
-      return await init();
+      const cacheInit = await init();
+      cacheTimestamp = Date.now();
+      return cacheInit;
     } catch (err) {
       cache = undefined;
 
@@ -26,7 +30,15 @@ export const lazyLoad = <State, Context>(
     }
   };
 
+  const validateCache = () =>
+    typeof cache === 'undefined' ||
+    typeof cacheTimestamp === 'undefined' ||
+    typeof ttl === 'undefined' ||
+    Date.now() - cacheTimestamp < ttl ||
+    (cache = undefined);
+
   return async (ctx, next) => {
+    validateCache();
     const middleware = await (cache ?? (cache = initOrInvalidate()));
 
     return middleware(ctx, next) as unknown;
