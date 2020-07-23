@@ -12,7 +12,7 @@
     "@types/uuid": "8.0.0",
     "hot-shots": "7.7.1",
     "koa": "2.13.0",
-    "skuba": "3.7.5",
+    "skuba": "3.7.6",
     "supertest": "4.0.2"
   },
   "engines": {
