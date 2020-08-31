@@ -10,7 +10,7 @@
     "@types/koa": "2.11.4",
     "@types/supertest": "2.0.10",
     "@types/uuid": "8.3.0",
-    "hot-shots": "7.7.1",
+    "hot-shots": "7.8.0",
     "koa": "2.13.0",
     "skuba": "3.9.0",
     "supertest": "4.0.2"
