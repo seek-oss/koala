@@ -90,6 +90,17 @@ describe('errorMiddleware', () => {
       .expect(403, { access: false });
   });
 
+  it('exposes a thrown 4xx custom JSON response as JSON based on `Accept`', async () => {
+    mockNext.mockImplementation((ctx) => {
+      ctx.throw(403, { body: { access: false }, isJsonResponse: true });
+    });
+
+    await agent()
+      .get('/')
+      .set('Accept', 'application/json')
+      .expect(403, { access: false });
+  });
+
   it('exposes a thrown 4xx `JsonResponse` as text based on `Accept`', async () => {
     mockNext.mockImplementation((ctx) => {
       ctx.throw(410, new JsonResponse('Gone away', { gone: true }));

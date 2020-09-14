@@ -24,10 +24,9 @@ export const lazyLoad = <State, Context>(
       const cacheInit = await init();
       cacheTimestamp = Date.now();
       return cacheInit;
-    } catch (err) {
+    } catch (err: unknown) {
       cache = undefined;
 
-      /* eslint-disable-next-line no-throw-literal */
       throw err;
     }
   };

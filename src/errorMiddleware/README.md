@@ -54,3 +54,5 @@ ctx.throw(
   }),
 );
 ```
+
+You can also bring your own child Error class by exposing an `isJsonResponse` property set to `true`.

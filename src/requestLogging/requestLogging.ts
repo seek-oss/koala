@@ -132,8 +132,9 @@ export const createMiddleware = <StateT extends State, CustomT>(
     try {
       await next();
       requestFinished({ status: ctx.response.status });
-    } catch (e) {
-      requestFinished({ status: 500, internalErrorString: String(e) }, e);
-      throw e;
+    } catch (err: unknown) {
+      requestFinished({ status: 500, internalErrorString: String(err) }, err);
+
+      throw err;
     }
   };
