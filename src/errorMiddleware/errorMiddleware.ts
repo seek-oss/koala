@@ -19,7 +19,11 @@ const isObject = (value: unknown): value is Record<PropertyKey, unknown> =>
  * ```
  */
 export class JsonResponse extends Error {
-  public isJsonResponse = true;
+  /**
+   * The property used by `handle` to infer that this error contains a body that
+   * can be exposed in the HTTP response.
+   */
+  public isJsonResponse = true as const;
 
   /**
    * Creates a new `JsonResponse`
