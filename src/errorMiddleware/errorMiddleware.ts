@@ -19,6 +19,8 @@ const isObject = (value: unknown): value is Record<PropertyKey, unknown> =>
  * ```
  */
 export class JsonResponse extends Error {
+  public isJsonResponse = true;
+
   /**
    * Creates a new `JsonResponse`
    *
@@ -45,9 +47,9 @@ export class JsonResponse extends Error {
  * status, and will set the error message as the response body for non-5xx
  * statuses. It works well with Koa's built-in `ctx.throw`.
  *
- * This includes a specific check for the `JsonResponse` class to support
- * including a JSON response body. If the request accepts `application/json`
- * the error's `body` will be returned, otherwise its plain text `message`.
+ * This includes support for a JSON response body by throwing an error with
+ * `isJsonResponse` set to `true`. If the request accepts `application/json` the
+ * error's `body` will be returned, otherwise its plain text `message`.
  *
  * This should be placed high up the middleware chain so that errors from lower
  * middleware are handled. It also serves to set the correct `ctx.status` for
@@ -65,8 +67,8 @@ export class JsonResponse extends Error {
 export const handle: Middleware = async (ctx, next) => {
   try {
     return (await next()) as unknown;
-  } catch (err) {
-    ctx.state[ERROR_STATE_KEY] = err as unknown;
+  } catch (err: unknown) {
+    ctx.state[ERROR_STATE_KEY] = err;
 
     if (!isObject(err) || typeof err.status !== 'number') {
       ctx.status = 500;
@@ -79,7 +81,7 @@ export const handle: Middleware = async (ctx, next) => {
 
     if (
       expose &&
-      err instanceof JsonResponse &&
+      err.isJsonResponse === true &&
       // Prefer JSON ourselves if the request has no preference
       ctx.accepts(['application/json', 'text/plain']) === 'application/json'
     ) {
