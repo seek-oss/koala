@@ -55,12 +55,10 @@ const helloWorldHandler = async (ctx: Koa.Context) => {
   "url": "/internal/_helloworld",
   "x-request-id": "28f9be45-c403-476b-8351-f222318aeaf5",
   "name": "ca-example-service",
-  "hostname": "L3088",
-  "pid": 38052,
   "level": 30,
   "msg": "About to return Hello World!",
   "time": "2018-10-16T00:15:35.009Z",
-  "v": 1
+  "version": "abcdefg.123"
 }
 ```
 
