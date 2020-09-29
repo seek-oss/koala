@@ -57,7 +57,8 @@ const helloWorldHandler = async (ctx: Koa.Context) => {
   "name": "ca-example-service",
   "level": 30,
   "msg": "About to return Hello World!",
-  "time": "2018-10-16T00:15:35.009Z"
+  "time": "2018-10-16T00:15:35.009Z",
+  "version": "abcdefg.123"
 }
 ```
 
