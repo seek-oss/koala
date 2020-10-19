@@ -1,111 +1,168 @@
-import Koa from 'koa';
+import Router, { Middleware } from '@koa/router';
+import Koa, { Context, Next } from 'koa';
+import request from 'supertest';
 
 import { contextFields, createMiddleware } from './requestLogging';
 
 describe('RequestLogging', () => {
+  const createAgent = (...middlewares: Middleware[]) => {
+    const app = new Koa();
+
+    for (const middleware of middlewares) {
+      app.use(middleware);
+    }
+
+    return request.agent(app.callback());
+  };
+
   describe('contextFields', () => {
-    it('returns fields containg request information', () => {
-      const ctx = ({
-        request: {
-          method: 'GET',
-          url: '/foo/bar?baz',
-          header: {
-            'user-agent': 'Safari',
+    it('returns request information for a vanilla handler', () => {
+      const handler = jest.fn((ctx: Context) => {
+        ctx.status = 200;
+        ctx.body = 'hello';
+
+        const fields = contextFields(ctx);
+
+        expect(fields).toMatchInlineSnapshot(
+          {
+            'x-request-id': expect.any(String),
           },
-        },
-        state: {},
-      } as unknown) as Koa.Context;
+          `
+          Object {
+            "method": "GET",
+            "url": "/route/foo?bar",
+            "x-request-id": Any<String>,
+          }
+        `,
+        );
+      });
 
-      const fields = contextFields(ctx);
+      return createAgent(handler)
+        .get('/route/foo?bar')
+        .set('user-agent', 'Safari')
+        .expect(200, 'hello');
+    });
 
-      expect(fields.method).toBe('GET');
-      expect(fields.url).toBe('/foo/bar?baz');
-      expect(fields['x-request-id']).toBeDefined();
-      expect(fields.headers).toBeUndefined();
+    it('returns request information for a @koa/router handler', () => {
+      const router = new Router().get(
+        '/route/:segment',
+        jest.fn((ctx: Context) => {
+          ctx.status = 200;
+          ctx.body = 'hello';
+
+          const fields = contextFields(ctx);
+
+          expect(fields).toMatchInlineSnapshot(
+            {
+              'x-request-id': expect.any(String),
+            },
+            `
+            Object {
+              "method": "GET",
+              "url": "/route/foo?bar",
+              "x-request-id": Any<String>,
+            }
+          `,
+          );
+        }),
+      );
+
+      return createAgent(router.routes())
+        .get('/route/foo?bar')
+        .set('user-agent', 'Safari')
+        .expect(200, 'hello');
     });
   });
 
   describe('createMiddleware', () => {
     it('logs a successful request', async () => {
+      const handler = jest.fn((ctx: Context) => {
+        ctx.status = 201;
+      });
+
       const logMock = jest.fn();
-      const ctx = ({
-        request: {
-          method: 'POST',
-          url: '/my/test/service',
-          header: {
-            'Authenticated-User': 'somesercret',
-            'user-agent': 'Safari',
-          },
-        },
-        response: {
-          status: 404,
-        },
-        state: {},
-      } as unknown) as Koa.Context;
 
       const middleware = createMiddleware(logMock);
 
-      await middleware(ctx, () => {
-        ctx.response.status = 201;
-        return Promise.resolve();
-      });
+      await createAgent(middleware, handler)
+        .post('/my/test/service')
+        .set('Authenticated-User', 'somesercret')
+        .set('user-agent', 'Safari')
+        .expect(201);
 
       expect(logMock).toBeCalledTimes(1);
 
-      const [logCtx, fields, error] = logMock.mock.calls[0] as unknown[];
+      const [, fields, err] = logMock.mock.calls[0];
 
-      expect(logCtx).toBe(ctx);
+      expect(fields).toMatchInlineSnapshot(
+        {
+          headers: {
+            host: expect.any(String),
+          },
+          latency: expect.any(Number),
+          'x-request-id': expect.any(String),
+        },
+        `
+        Object {
+          "headers": Object {
+            "accept-encoding": "gzip, deflate",
+            "authenticated-user": "🐨 REDACTED 🙅",
+            "connection": "close",
+            "content-length": "0",
+            "host": Any<String>,
+            "user-agent": "Safari",
+          },
+          "latency": Any<Number>,
+          "method": "POST",
+          "status": 201,
+          "url": "/my/test/service",
+          "x-request-id": Any<String>,
+        }
+      `,
+      );
 
-      expect(typeof fields).toEqual('object');
-
-      const fieldsObj = fields as Record<string, unknown>;
-      expect(fieldsObj.latency).toBeGreaterThanOrEqual(0);
-      expect(fieldsObj.status).toBe(201);
-      expect(fieldsObj.headers).toEqual({
-        'Authenticated-User': '🐨 REDACTED 🙅',
-        'user-agent': 'Safari',
-      });
-
-      expect(error).toBeUndefined();
+      expect(err).toBeUndefined();
     });
 
     it('skips logging if the handler requests it', async () => {
+      const handler = jest.fn((ctx: Context) => {
+        ctx.status = 201;
+        ctx.state.skipRequestLogging = true;
+      });
+
       const logMock = jest.fn();
-      const ctx = ({
-        response: {
-          status: 200,
-        },
-        state: {},
-      } as unknown) as Koa.Context;
 
       const middleware = createMiddleware(logMock);
 
-      await middleware(ctx, () => {
-        ctx.state.skipRequestLogging = true;
-        return Promise.resolve();
-      });
+      await createAgent(middleware, handler)
+        .post('/my/test/service')
+        .set('Authenticated-User', 'somesercret')
+        .set('user-agent', 'Safari')
+        .expect(201);
 
-      expect(logMock).toBeCalledTimes(0);
+      expect(logMock).not.toBeCalled();
     });
 
     it('logs a failed request', async () => {
-      const logMock = jest.fn();
-      const ctx = ({
-        request: {
-          method: 'POST',
-          url: '/my/failed/service',
-          header: {
-            ACCEPT: 'image/png',
-            authorization: 'retain-me',
-            'X-Custom-Header': 'foo',
-          },
-        },
-        response: {
-          status: 404,
-        },
-        state: {},
-      } as unknown) as Koa.Context;
+      const expectedError = Error('Something tragic happened');
 
+      // Avoid `console.error` logging
+      const errorHandler = jest.fn(async (ctx: Context, next: Next) => {
+        try {
+          await next();
+        } catch (err) {
+          // Nonsense status code; the caller sees this but not the middleware
+          ctx.status = 418;
+        }
+      });
+
+      const handler = jest.fn(() => {
+        throw expectedError;
+      });
+
+      const logMock = jest.fn();
+
+      // Do not redact authorization
       const headerReplacements = {
         'x-custom-header': 'substitution',
         accept: undefined,
@@ -113,33 +170,49 @@ describe('RequestLogging', () => {
 
       const middleware = createMiddleware(logMock, headerReplacements);
 
-      const expectedError = Error('Something tragic happened');
+      await createAgent(errorHandler, middleware, handler)
+        .post('/my/failed/service')
+        .set('ACCEPT', 'image/png')
+        .set('authorization', 'retain-me')
+        .set('X-Custom-Header', 'foo')
+        .set('user-agent', 'Safari')
+        .expect(418);
 
-      await expect(
-        middleware(ctx, () => {
-          throw expectedError;
-        }),
-      ).rejects.toBeDefined();
+      expect(logMock).toBeCalledTimes(1);
 
-      expect(logMock).toHaveBeenCalledTimes(1);
-      const [logCtx, fields, error] = logMock.mock.calls[0] as unknown[];
+      const [, fields, err] = logMock.mock.calls[0];
 
-      expect(logCtx).toBe(ctx);
-
-      expect(typeof fields).toEqual('object');
-
-      const fieldsObj = fields as Record<string, unknown>;
-      expect(fieldsObj.latency).toBeGreaterThanOrEqual(0);
-      expect(fieldsObj.status).toBe(500);
-      expect(fieldsObj.internalErrorString).toBe(
-        'Error: Something tragic happened',
+      expect(fields).toMatchInlineSnapshot(
+        {
+          headers: {
+            host: expect.any(String),
+          },
+          latency: expect.any(Number),
+          'x-request-id': expect.any(String),
+        },
+        `
+        Object {
+          "headers": Object {
+            "accept": undefined,
+            "accept-encoding": "gzip, deflate",
+            "authorization": "retain-me",
+            "connection": "close",
+            "content-length": "0",
+            "host": Any<String>,
+            "user-agent": "Safari",
+            "x-custom-header": "substitution",
+          },
+          "internalErrorString": "Error: Something tragic happened",
+          "latency": Any<Number>,
+          "method": "POST",
+          "status": 500,
+          "url": "/my/failed/service",
+          "x-request-id": Any<String>,
+        }
+      `,
       );
-      expect(fieldsObj.headers).toEqual({
-        authorization: 'retain-me',
-        'X-Custom-Header': 'substitution',
-      });
 
-      expect(error).toBe(expectedError);
+      expect(err).toBe(expectedError);
     });
   });
 });
