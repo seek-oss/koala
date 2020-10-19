@@ -162,6 +162,7 @@ describe('RequestLogging', () => {
 
       const logMock = jest.fn();
 
+      // Do not redact authorization
       const headerReplacements = {
         'x-custom-header': 'substitution',
         accept: undefined,
