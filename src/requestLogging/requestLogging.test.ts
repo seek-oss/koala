@@ -32,6 +32,7 @@ describe('RequestLogging', () => {
             "method": "GET",
             "url": "/route/foo?bar",
             "x-request-id": Any<String>,
+            "x-session-id": "8f859d2a-46a7-4b2d-992b-3da4a18b7ab5",
           }
         `,
         );
@@ -40,11 +41,13 @@ describe('RequestLogging', () => {
       return createAgent(handler)
         .get('/route/foo?bar')
         .set('user-agent', 'Safari')
+        .set('x-session-id', '8f859d2a-46a7-4b2d-992b-3da4a18b7ab5')
         .expect(200, 'hello');
     });
 
     it('returns request information for a @koa/router handler', () => {
       const router = new Router().get(
+        'getRoute',
         '/route/:segment',
         jest.fn((ctx: Context) => {
           ctx.status = 200;
@@ -59,6 +62,8 @@ describe('RequestLogging', () => {
             `
             Object {
               "method": "GET",
+              "route": "/route/:segment",
+              "routeName": "getRoute",
               "url": "/route/foo?bar",
               "x-request-id": Any<String>,
             }
