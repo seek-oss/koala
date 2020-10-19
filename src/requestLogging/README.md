@@ -13,14 +13,16 @@ It provides two main features:
 
 ## Context Fields
 
-`contextFields` returns an object containing key-value pairs for the request method, URL and [X-Request-ID](https://github.com/SEEK-Jobs/rfc/blob/master/RFC002-RequestIds.md).
+`contextFields` returns an object containing key-value pairs for the request method, route, URL, [`X-Request-Id`] and ad-hoc `X-Session-Id`.
 This is intended to provide the essential information about the request;
 the full request details can be correlated with the request log via `x-request-id`.
+
+The route properties assume use of `@koa/router`, and are omitted if the expected metadata is not present on context.
 
 The returned object can be used to construct a child logger that annotates log entries with request-specific information.
 This can be accomplished using the `child` method of Bunyan or pino loggers.
 
-`contextFields` requires access to the Koa context to generate a stable `X-Request-ID`.
+`contextFields` requires access to the Koa context to generate a stable [`X-Request-Id`].
 See the [TracingHeaders add-on](../tracingHeaders/README.md) for more information.
 
 ### Usage
@@ -45,15 +47,28 @@ const helloWorldHandler = async (ctx: Koa.Context) => {
 
   ctx.body = 'Hello world';
 };
+
+const router = new Router().get(
+  'readGreeting',
+  '/internal/:greeting',
+  helloWorldHandler,
+);
+
+const app = new Koa().use(router.routes()).use(router.allowedMethods());
 ```
 
 ### Example Log Entry
 
-```json
+```jsonc
 {
   "method": "GET",
+  // `route` and `routeName` are present where provided by `@koa/router`
+  "route": "/internal/:greeting",
+  "routeName": "readGreeting",
   "url": "/internal/_helloworld",
   "x-request-id": "28f9be45-c403-476b-8351-f222318aeaf5",
+  // `x-session-id` is present only where provided by the client
+  "x-session-id": "49cd6fd8-3e74-42b6-b63d-ee7b13e5edf5",
   "name": "ca-example-service",
   "level": 30,
   "msg": "About to return Hello World!",
@@ -143,3 +158,5 @@ const healthCheckHandler = async (ctx: Koa.Context) => {
   "v": 0
 }
 ```
+
+[`x-request-id`]: https://github.com/SEEK-Jobs/rfc/blob/master/RFC002-RequestIds.md

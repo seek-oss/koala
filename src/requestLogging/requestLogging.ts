@@ -68,15 +68,31 @@ const replaceHeaders = (
 /**
  * Returns an object of request-specific log fields
  *
- * The returned object includes key-value pairs for the request method, URL and
- * tracing request ID. This can be used to construct a child logger that
+ * The returned object includes key-value pairs for the request method, route,
+ * URL and tracing IDs. This can be used to construct a child logger that
  * annotates log entries with request-specific information.
+ *
+ * The route properties assume use of `@koa/router`, and are omitted if the
+ * expected metadata is not present on context.
  */
-export const contextFields = (ctx: Koa.Context): Fields => ({
-  method: ctx.request.method,
-  url: ctx.request.url,
-  'x-request-id': tracingFromContext(ctx).requestID,
-});
+export const contextFields = (ctx: Koa.Context): Fields => {
+  const { adhocSessionID, requestID } = tracingFromContext(ctx);
+
+  return {
+    method: ctx.request.method,
+    ...(typeof ctx._matchedRoute === 'string' && {
+      route: ctx._matchedRoute,
+    }),
+    ...(typeof ctx._matchedRouteName === 'string' && {
+      routeName: ctx._matchedRouteName,
+    }),
+    url: ctx.request.url,
+    'x-request-id': requestID,
+    ...(typeof adhocSessionID === 'string' && {
+      'x-session-id': adhocSessionID,
+    }),
+  };
+};
 
 /**
  * Creates middleware for logging requests and their responses
