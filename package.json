@@ -14,7 +14,7 @@
     "@types/uuid": "8.3.0",
     "hot-shots": "8.2.0",
     "koa": "2.13.0",
-    "skuba": "3.10.0",
+    "skuba": "3.10.1",
     "supertest": "5.0.0"
   },
   "engines": {
