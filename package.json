@@ -15,7 +15,7 @@
     "hot-shots": "8.2.0",
     "koa": "2.13.0",
     "skuba": "3.10.1",
-    "supertest": "6.0.0"
+    "supertest": "6.0.1"
   },
   "engines": {
     "node": ">=10.7"
