@@ -16,7 +16,7 @@ type TagsForContext = (ctx: Koa.Context) => Record<string, unknown> | undefined;
 /**
  * Creates a new request metrics middleware
  *
- * This records a `request` histogram metric for every request. It will have
+ * This records a `request.distribution` metric for every request. It will have
  * `http_status` and `http_status_family` tags in addition to what's returned
  * by `tagsForContext`.
  *
@@ -32,6 +32,7 @@ type TagsForContext = (ctx: Koa.Context) => Record<string, unknown> | undefined;
 export const create = (
   metricsClient: StatsD,
   tagsForContext: TagsForContext,
+  sampleRate: number = 1,
 ): Koa.Middleware =>
   async function metricsMiddleware(
     ctx: Koa.Context,
@@ -54,7 +55,12 @@ export const create = (
       const durationNanos = process.hrtime.bigint() - startTime;
 
       if (!ctx.state.skipRequestLogging) {
-        metricsClient.timing('request', Number(durationNanos) / 1e6, tags);
+        metricsClient.distribution(
+          'request.distribution',
+          Number(durationNanos) / 1e6,
+          sampleRate,
+          tags,
+        );
       }
     }
   };

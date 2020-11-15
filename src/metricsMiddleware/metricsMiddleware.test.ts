@@ -12,9 +12,9 @@ describe('metricsMiddleware', () => {
     } as unknown) as Koa.Context);
 
   it('should record metrics for a successful request', async () => {
-    const mockTiming = jest.fn();
+    const mockDistribution = jest.fn();
     const mockMetricsClient = ({
-      timing: mockTiming,
+      distribution: mockDistribution,
     } as unknown) as StatsD;
 
     const tagsForContext = () => ({});
@@ -24,14 +24,16 @@ describe('metricsMiddleware', () => {
       mockCtx.status = 201;
     });
 
-    const metricsMiddleware = create(mockMetricsClient, tagsForContext);
+    const metricsMiddleware = create(mockMetricsClient, tagsForContext, 0.5);
     await metricsMiddleware(mockCtx, mockNext);
 
-    expect(mockTiming).toHaveBeenCalledTimes(1);
+    expect(mockDistribution).toHaveBeenCalledTimes(1);
 
-    const [name, latency, tags] = mockTiming.mock.calls[0] as unknown[];
-    expect(name).toBe('request');
+    const [name, latency, sampleRate, tags] = mockDistribution.mock
+      .calls[0] as unknown[];
+    expect(name).toBe('request.distribution');
     expect(latency).toBeGreaterThanOrEqual(0);
+    expect(sampleRate).toBe(0.5);
     expect(tags).toEqual({
       http_status: '201',
       http_status_family: '2xx',
@@ -40,9 +42,9 @@ describe('metricsMiddleware', () => {
   });
 
   it('should record metrics for a failed request', async () => {
-    const mockTiming = jest.fn();
+    const mockDistribution = jest.fn();
     const mockMetricsClient = ({
-      timing: mockTiming,
+      distribution: mockDistribution,
     } as unknown) as StatsD;
 
     const tagsForContext = (ctx: Koa.Context) => ({
@@ -58,11 +60,14 @@ describe('metricsMiddleware', () => {
     const metricsMiddleware = create(mockMetricsClient, tagsForContext);
     await expect(metricsMiddleware(mockCtx, mockNext)).rejects.toBeDefined();
 
-    expect(mockTiming).toHaveBeenCalledTimes(1);
+    expect(mockDistribution).toHaveBeenCalledTimes(1);
 
-    const [name, latency, tags] = mockTiming.mock.calls[0] as unknown[];
-    expect(name).toBe('request');
+    const [name, latency, sampleRate, tags] = mockDistribution.mock
+      .calls[0] as unknown[];
+
+    expect(name).toBe('request.distribution');
     expect(latency).toBeGreaterThanOrEqual(0);
+    expect(sampleRate).toBe(1);
     expect(tags).toEqual({
       http_status: '500',
       http_status_family: '5xx',
@@ -72,9 +77,9 @@ describe('metricsMiddleware', () => {
   });
 
   it('should skip recording if the handler requests it', async () => {
-    const mockTiming = jest.fn();
+    const mockDistribution = jest.fn();
     const mockMetricsClient = ({
-      timing: mockTiming,
+      distribution: mockDistribution,
     } as unknown) as StatsD;
 
     const tagsForContext = () => ({});
@@ -87,6 +92,6 @@ describe('metricsMiddleware', () => {
     const metricsMiddleware = create(mockMetricsClient, tagsForContext);
     await metricsMiddleware(mockCtx, mockNext);
 
-    expect(mockTiming).not.toHaveBeenCalled();
+    expect(mockDistribution).not.toHaveBeenCalled();
   });
 });
