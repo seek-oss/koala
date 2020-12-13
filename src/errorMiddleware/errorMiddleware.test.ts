@@ -1,6 +1,5 @@
 import Koa from 'koa';
-
-import { agentFromApp } from '../testing/server';
+import request from 'supertest';
 
 import { JsonResponse, handle, thrown } from './errorMiddleware';
 
@@ -10,16 +9,12 @@ describe('errorMiddleware', () => {
 
   const app = new Koa().use(mockPrev).use(handle).use(mockNext);
 
-  const agent = agentFromApp(app);
-
-  beforeAll(agent.setup);
+  const agent = request.agent(app.callback());
 
   beforeEach(() => mockPrev.mockImplementation((_, next) => next()));
 
   afterEach(mockPrev.mockReset);
   afterEach(mockNext.mockReset);
-
-  afterAll(agent.teardown);
 
   it('passes through a returned 2xx', async () => {
     mockNext.mockImplementation((ctx) => {
@@ -27,7 +22,7 @@ describe('errorMiddleware', () => {
       ctx.body = 'good';
     });
 
-    await agent().get('/').expect(200, 'good');
+    await agent.get('/').expect(200, 'good');
   });
 
   it('passes through a returned 5xx', async () => {
@@ -36,7 +31,7 @@ describe('errorMiddleware', () => {
       ctx.body = 'evil';
     });
 
-    await agent().get('/').expect(500, 'evil');
+    await agent.get('/').expect(500, 'evil');
   });
 
   it('provides thrown error to higher middleware', async () => {
@@ -52,7 +47,7 @@ describe('errorMiddleware', () => {
       ctx.throw(400, 'bad');
     });
 
-    await agent().get('/').expect(400, 'bad');
+    await agent.get('/').expect(400, 'bad');
   });
 
   it('exposes a thrown 4xx error', async () => {
@@ -60,7 +55,7 @@ describe('errorMiddleware', () => {
       ctx.throw(400, 'bad');
     });
 
-    await agent().get('/').expect(400, 'bad');
+    await agent.get('/').expect(400, 'bad');
   });
 
   it('redacts a thrown 5xx error', async () => {
@@ -68,7 +63,7 @@ describe('errorMiddleware', () => {
       ctx.throw(500, 'bad');
     });
 
-    await agent().get('/').expect(500, '');
+    await agent.get('/').expect(500, '');
   });
 
   it('exposes a thrown 4xx `JsonResponse` as JSON by default', async () => {
@@ -76,7 +71,7 @@ describe('errorMiddleware', () => {
       ctx.throw(400, new JsonResponse('Bad input', { bad: true }));
     });
 
-    await agent().get('/').expect(400, { bad: true });
+    await agent.get('/').expect(400, { bad: true });
   });
 
   it('exposes a thrown 4xx `JsonResponse` as JSON based on `Accept`', async () => {
@@ -84,7 +79,7 @@ describe('errorMiddleware', () => {
       ctx.throw(403, new JsonResponse('No access', { access: false }));
     });
 
-    await agent()
+    await agent
       .get('/')
       .set('Accept', 'application/json')
       .expect(403, { access: false });
@@ -95,7 +90,7 @@ describe('errorMiddleware', () => {
       ctx.throw(403, { body: { access: false }, isJsonResponse: true });
     });
 
-    await agent()
+    await agent
       .get('/')
       .set('Accept', 'application/json')
       .expect(403, { access: false });
@@ -106,7 +101,7 @@ describe('errorMiddleware', () => {
       ctx.throw(410, new JsonResponse('Gone away', { gone: true }));
     });
 
-    await agent().get('/').set('Accept', 'text/plain').expect(410, 'Gone away');
+    await agent.get('/').set('Accept', 'text/plain').expect(410, 'Gone away');
   });
 
   it('redact a thrown 5xx `JsonResponse`', async () => {
@@ -114,7 +109,7 @@ describe('errorMiddleware', () => {
       ctx.throw(500, new JsonResponse('Bad input', { bad: true }));
     });
 
-    await agent().get('/').expect(500, '');
+    await agent.get('/').expect(500, '');
   });
 
   it('handles directly-thrown error', async () => {
@@ -122,7 +117,7 @@ describe('errorMiddleware', () => {
       throw new Error('bad');
     });
 
-    await agent().get('/').expect(500, '');
+    await agent.get('/').expect(500, '');
   });
 
   it('handles null error', async () => {
@@ -131,7 +126,7 @@ describe('errorMiddleware', () => {
       throw null;
     });
 
-    await agent().get('/').expect(500, '');
+    await agent.get('/').expect(500, '');
   });
 
   it('handles string error', async () => {
@@ -140,6 +135,6 @@ describe('errorMiddleware', () => {
       throw 'bad';
     });
 
-    await agent().get('/').expect(500, '');
+    await agent.get('/').expect(500, '');
   });
 });
