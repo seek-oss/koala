@@ -197,6 +197,7 @@ describe('RequestLogging', () => {
         },
         `
         Object {
+          "err": [Error: Something tragic happened],
           "headers": Object {
             "accept": undefined,
             "accept-encoding": "gzip, deflate",

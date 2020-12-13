@@ -153,6 +153,11 @@ const healthCheckHandler = async (ctx: Koa.Context) => {
   },
   "status": 500,
   "internalErrorString": "ExpiredTokenException: The security token included in the request is expired",
+  "err": {
+    "message": "The security token included in the request is expired",
+    "name": "ExpiredTokenException",
+    "stack": "..."
+  },
   "msg": "request log",
   "time": "2018-10-16T00:44:41.055Z",
   "v": 0
