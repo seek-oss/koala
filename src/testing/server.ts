@@ -14,12 +14,15 @@ export const agentFromApp = <State, Context>(app: Koa<State, Context>) => {
 
   const setup = async () => {
     await new Promise<void>(
-      (resolve) => (server = app.listen(undefined, resolve)),
+      (resolve) => (server = app.listen(undefined, () => resolve())),
     );
     agent = request.agent(server);
   };
 
-  const teardown = () => new Promise<void>((resolve) => server.close(resolve));
+  const teardown = () =>
+    new Promise<void>((resolve, reject) =>
+      server.close((err) => (err ? reject(err) : resolve())),
+    );
 
   return Object.assign(getAgent, { setup, teardown });
 };
