@@ -13,11 +13,13 @@ export const agentFromApp = <State, Context>(app: Koa<State, Context>) => {
   const getAgent = () => agent;
 
   const setup = async () => {
-    await new Promise((resolve) => (server = app.listen(undefined, resolve)));
+    await new Promise<void>(
+      (resolve) => (server = app.listen(undefined, resolve)),
+    );
     agent = request.agent(server);
   };
 
-  const teardown = () => new Promise((resolve) => server.close(resolve));
+  const teardown = () => new Promise<void>((resolve) => server.close(resolve));
 
   return Object.assign(getAgent, { setup, teardown });
 };
