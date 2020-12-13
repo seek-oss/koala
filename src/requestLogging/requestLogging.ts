@@ -1,5 +1,6 @@
 import Koa from 'koa';
 
+import { thrown } from '../errorMiddleware/errorMiddleware';
 import { tracingFromContext } from '../tracingHeaders/tracingHeaders';
 
 /**
@@ -126,7 +127,7 @@ export const createMiddleware = <StateT extends State, CustomT>(
 
     const requestFinished = (
       resultFields: Record<string, unknown>,
-      error?: unknown,
+      err?: unknown,
     ) => {
       if (ctx.state.skipRequestLogging) {
         return;
@@ -136,20 +137,25 @@ export const createMiddleware = <StateT extends State, CustomT>(
       logFn(
         ctx,
         {
+          ...(typeof err !== 'undefined' && {
+            err,
+            internalErrorString: String(err),
+          }),
           latency,
           headers: replaceHeaders(ctx.request.header, headerReplacements),
           ...contextFields(ctx),
           ...resultFields,
         },
-        error,
+        err,
       );
     };
 
     try {
       await next();
-      requestFinished({ status: ctx.response.status });
+
+      requestFinished({ status: ctx.response.status }, thrown(ctx));
     } catch (err: unknown) {
-      requestFinished({ status: 500, internalErrorString: String(err) }, err);
+      requestFinished({ status: 500 }, err);
 
       throw err;
     }
