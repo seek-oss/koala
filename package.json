@@ -13,7 +13,7 @@
     "@types/supertest": "2.0.10",
     "@types/uuid": "8.3.0",
     "hot-shots": "8.3.0",
-    "koa": "2.13.0",
+    "koa": "2.13.1",
     "skuba": "3.11.0",
     "supertest": "6.0.1"
   },
