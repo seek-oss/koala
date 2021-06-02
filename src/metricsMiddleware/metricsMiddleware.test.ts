@@ -5,17 +5,17 @@ import { create } from './metricsMiddleware';
 
 describe('metricsMiddleware', () => {
   const makeCtx = (fields: Record<string, unknown> = {}): Koa.Context =>
-    (({
+    ({
       state: {},
       method: 'GET',
       ...fields,
-    } as unknown) as Koa.Context);
+    } as unknown as Koa.Context);
 
   it('should record metrics for a successful request', async () => {
     const mockDistribution = jest.fn();
-    const mockMetricsClient = ({
+    const mockMetricsClient = {
       distribution: mockDistribution,
-    } as unknown) as StatsD;
+    } as unknown as StatsD;
 
     const tagsForContext = () => ({});
 
@@ -43,9 +43,9 @@ describe('metricsMiddleware', () => {
 
   it('should record metrics for a failed request', async () => {
     const mockDistribution = jest.fn();
-    const mockMetricsClient = ({
+    const mockMetricsClient = {
       distribution: mockDistribution,
-    } as unknown) as StatsD;
+    } as unknown as StatsD;
 
     const tagsForContext = (ctx: Koa.Context) => ({
       test_original_status: ctx.status,
@@ -78,9 +78,9 @@ describe('metricsMiddleware', () => {
 
   it('should skip recording if the handler requests it', async () => {
     const mockDistribution = jest.fn();
-    const mockMetricsClient = ({
+    const mockMetricsClient = {
       distribution: mockDistribution,
-    } as unknown) as StatsD;
+    } as unknown as StatsD;
 
     const tagsForContext = () => ({});
 

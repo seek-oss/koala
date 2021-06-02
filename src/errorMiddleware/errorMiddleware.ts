@@ -3,7 +3,7 @@ import { Context, Middleware } from 'koa';
 /**
  * @see {@link https://github.com/microsoft/TypeScript/issues/1863}
  */
-const ERROR_STATE_KEY = (Symbol('seek-koala-error') as unknown) as string;
+const ERROR_STATE_KEY = Symbol('seek-koala-error') as unknown as string;
 
 const isObject = (value: unknown): value is Record<PropertyKey, unknown> =>
   typeof value === 'object' && value !== null;

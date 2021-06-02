@@ -3,10 +3,10 @@ import Koa from 'koa';
 import { outgoingHeaders, tracingFromContext } from './tracingHeaders';
 
 const mockCtxWithHeaders = (header: Record<string, string>): Koa.Context =>
-  (({
+  ({
     request: { header },
     state: {},
-  } as unknown) as Koa.Context);
+  } as unknown as Koa.Context);
 
 describe('TracingHeaders', () => {
   describe('tracingFromContext', () => {

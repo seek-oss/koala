@@ -4,9 +4,9 @@ import { middleware } from './secureHeaders';
 
 describe('secureHeaders', () => {
   it('should set headers unconditionally', async () => {
-    const mockCtx = ({
+    const mockCtx = {
       set: jest.fn(),
-    } as unknown) as Koa.Context;
+    } as unknown as Koa.Context;
     const mockNext = jest.fn();
 
     await middleware(mockCtx, mockNext);
