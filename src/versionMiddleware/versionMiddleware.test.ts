@@ -4,9 +4,9 @@ import { create } from './versionMiddleware';
 
 describe('versionMiddleware', () => {
   it('should set headers with version when present', async () => {
-    const mockCtx = ({
+    const mockCtx = {
       set: jest.fn(),
-    } as unknown) as Koa.Context;
+    } as unknown as Koa.Context;
     const mockNext = jest.fn();
 
     const appID = {
@@ -24,9 +24,9 @@ describe('versionMiddleware', () => {
   });
 
   it('should set headers without a version', async () => {
-    const mockCtx = ({
+    const mockCtx = {
       set: jest.fn(),
-    } as unknown) as Koa.Context;
+    } as unknown as Koa.Context;
     const mockNext = jest.fn();
 
     const appID = {
