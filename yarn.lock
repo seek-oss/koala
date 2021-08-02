@@ -1183,10 +1183,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@koa/router@10.0.0":
-  version "10.0.0"
-  resolved "https://registry.yarnpkg.com/@koa/router/-/router-10.0.0.tgz#699115561afbd2740e2848ba299fc76b9e058ad6"
-  integrity sha512-z9ytrKWn/j/qUApMSJzZbUwkbLcN2ZXGq6UsqWkZb50Us+/Qpu0RwgZ6ytawVOhfFBZ1ai5iVWeD2Dcu0qcnJw==
+"@koa/router@10.1.0":
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/@koa/router/-/router-10.1.0.tgz#bc1d0d9bb1051ece8b862eed9c91545e08e7a069"
+  integrity sha512-QZiCDn8Fd9vVN0qCWw81fToF5GMdtyPD04fIOHXiCCmXB6sznhjHMd3xbVS2ZxrgLWrcN8s6tIItEv0wuXt2Ow==
   dependencies:
     debug "^4.1.1"
     http-errors "^1.7.3"
@@ -8410,10 +8410,10 @@ superagent@^6.1.0:
     readable-stream "^3.6.0"
     semver "^7.3.2"
 
-supertest@6.1.3:
-  version "6.1.3"
-  resolved "https://registry.yarnpkg.com/supertest/-/supertest-6.1.3.tgz#3f49ea964514c206c334073e8dc4e70519c7403f"
-  integrity sha512-v2NVRyP73XDewKb65adz+yug1XMtmvij63qIWHZzSX8tp6wiq6xBLUy4SUAd2NII6wIipOmHT/FD9eicpJwdgQ==
+supertest@6.1.4:
+  version "6.1.4"
+  resolved "https://registry.yarnpkg.com/supertest/-/supertest-6.1.4.tgz#ea8953343e0ca316e80e975b39340934f754eb06"
+  integrity sha512-giC9Zm+Bf1CZP09ciPdUyl+XlMAu6rbch79KYiYKOGcbK2R1wH8h+APul1i/3wN6RF1XfWOIF+8X1ga+7SBrug==
   dependencies:
     methods "^1.1.2"
     superagent "^6.1.0"
