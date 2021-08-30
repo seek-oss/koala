@@ -7,7 +7,7 @@
   },
   "description": "Koa add-ons for SEEK-standard tracing, logging and metrics",
   "devDependencies": {
-    "@koa/router": "10.1.0",
+    "@koa/router": "10.1.1",
     "@types/koa": "2.13.4",
     "@types/koa__router": "8.0.7",
     "@types/supertest": "2.0.11",
@@ -15,7 +15,7 @@
     "hot-shots": "8.5.0",
     "koa": "2.13.1",
     "skuba": "3.14.4",
-    "supertest": "6.1.5"
+    "supertest": "6.1.6"
   },
   "engines": {
     "node": ">=10.7"
