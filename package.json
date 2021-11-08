@@ -31,7 +31,7 @@
   "module": "./lib/index.js",
   "name": "seek-koala",
   "peerDependencies": {
-    "hot-shots": "5.x || 6.x || 7.x || 8.x",
+    "hot-shots": "5.x || 6.x || 7.x || 8.x || 9.x",
     "koa": "2"
   },
   "peerDependenciesMeta": {
