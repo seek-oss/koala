@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "moduleResolution": "node",
+    "lib": ["ES2018"],
     "outDir": "lib",
-    "removeComments": false
+    "removeComments": false,
+    "target": "ES2018"
   },
   "exclude": ["lib*/**/*"],
   "extends": "skuba/config/tsconfig.json"
