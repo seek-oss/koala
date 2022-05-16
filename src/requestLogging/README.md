@@ -7,16 +7,16 @@ It's intended to work with an app-provided logger such as [pino](http://getpino.
 
 It provides a few main features:
 
-- [`createLoggerContext, getLoggerContext, createLoggerContextMiddleware`](#context-logging) auto inject request based information into a logger's context
+- [`createLoggerContext, getLoggerContext, createLoggerContextMiddleware, contextFields`](#context-logging) auto inject request based information into a logger's context
 - [`createMiddleware`](#request-log) creates a Koa middleware for logging request and response information
 
 ## Context Logging
 
-`createLoggerContext` returns a `LoggerContext` instance which uses [`AsyncLocalStorage`](https://nodejs.org/docs/latest-v16.x/api/async_context.html#asynchronous-context-tracking).
+`createLoggerContext` returns a `LoggerContext` instance which is an [`AsyncLocalStorage`](https://nodejs.org/docs/latest-v16.x/api/async_context.html#asynchronous-context-tracking) instance under the hood.
 
-`getLoggerContext` returns the stored logger context from a `LoggerContext` instance for a given asynchronous context
+`getLoggerContext` returns the stored logger context from a given `LoggerContext` instance for the current asynchronous context
 
-`createLoggerContextMiddleware` sets the request context in a `LoggerContext` instance. It takes a function which returns fields to include in the logger context. If no function is provided it will use the `contextFields` function. This must be added early to the Koa middleware chain for the logger instance to be able to output context fields.
+`createLoggerContextMiddleware` sets the request context in a given `LoggerContext` instance. It takes a function which returns fields to include in the logger context. If no function is provided it will default to the `contextFields` function. This must be added early to the Koa middleware chain for the logger instance to be able to output context fields.
 
 `contextFields` returns an object containing key-value pairs for the request method, route, URL, [`X-Request-Id`] and ad-hoc `X-Session-Id`.
 This is intended to provide the essential information about the request;
@@ -50,6 +50,8 @@ const logger = pino({
   },
 });
 
+const loggerContextMiddleware = RequestLogging.createLoggerContextMiddleware(loggerContext);
+
 const helloWorldHandler = async (ctx: Koa.Context) => {
   logger.info('About to return Hello World!');
 
@@ -63,7 +65,7 @@ const router = new Router().get(
 );
 
 const app = new Koa()
-  .use(RequestLogging.createLoggerContextMiddleware(loggerContext));
+  .use(loggerContextMiddleware);
   .use(router.routes())
   .use(router.allowedMethods())
 ```
