@@ -198,7 +198,7 @@ export const getLoggerContext = (context: LoggerContext): Fields =>
  * logger context is stored and can be accessed by the logger.
  *
  * @param context - LoggerContext instance
- * @param getFieldsFn - Function to return a base set of context fields
+ * @param getFieldsFn - Function to return a base set of context fields. This defaults to the `contextFields` function.
  */
 export const createLoggerContextMiddleware =
   (
