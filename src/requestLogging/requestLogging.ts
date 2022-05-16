@@ -169,13 +169,12 @@ export const createMiddleware = <StateT extends State, CustomT>(
   };
 
 /**
- * An AsyncLocalStorage instance
+ * An AsyncLocalStorage instance which stores the Logger Context
  */
 export type LoggerContext = AsyncLocalStorage<Fields>;
 
 /**
- * The logger context. You should not need access this directly
- * but it is exported for debugging purposes.
+ * Creates a LoggerContext instance
  */
 export const createLoggerContext = (): LoggerContext =>
   new AsyncLocalStorage<Fields>();
@@ -184,6 +183,8 @@ export const createLoggerContext = (): LoggerContext =>
  * Fetches the logger context for the current async context
  *
  * This should be invoked every time a logger logs to inject request context
+ *
+ * @param context - LoggerContext instance
  */
 export const getLoggerContext = (context: LoggerContext): Fields =>
   context.getStore() ?? {};
@@ -196,6 +197,7 @@ export const getLoggerContext = (context: LoggerContext): Fields =>
  * This should be attached early in the middleware chain to ensure that the
  * logger context is stored and can be accessed by the logger.
  *
+ * @param context - LoggerContext instance
  * @param getFieldsFn - Function to return a base set of context fields
  */
 export const createLoggerContextMiddleware =
