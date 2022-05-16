@@ -5,13 +5,18 @@
 This add-on facilitates logging information about requests and responses.
 It's intended to work with an app-provided logger such as [pino](http://getpino.io/) or [Bunyan](https://github.com/trentm/node-bunyan).
 
-It provides two main features:
+It provides a few main features:
 
-- [`contextFields`](#context-fields) returns log fields related to the incoming request.
-
+- [`createLoggerContext, getLoggerContext, createLoggerContextMiddleware`](#context-logging) auto inject request based information into a logger's context
 - [`createMiddleware`](#request-log) creates a Koa middleware for logging request and response information
 
-## Context Fields
+## Context Logging
+
+`createLoggerContext` returns a `LoggerContext` instance which uses [`AsyncLocalStorage`](https://nodejs.org/docs/latest-v16.x/api/async_context.html#asynchronous-context-tracking).
+
+`getLoggerContext` returns the stored logger context from a `LoggerContext` instance for a given asynchronous context
+
+`createLoggerContextMiddleware` sets the request context in a `LoggerContext` instance. It takes a function which returns fields to include in the logger context. If no function is provided it will use the `contextFields` function. This must be added early to the Koa middleware chain for the logger instance to be able to output context fields.
 
 `contextFields` returns an object containing key-value pairs for the request method, route, URL, [`X-Request-Id`] and ad-hoc `X-Session-Id`.
 This is intended to provide the essential information about the request;
@@ -32,17 +37,20 @@ See the [TracingHeaders add-on](../tracingHeaders/README.md) for more informatio
 import pino from 'pino';
 import { RequestLogging } from 'seek-koala';
 
+const loggerContext = RequestLogging.createLoggerContext();
+
 // Create a root logger with the app name and version
-const rootLogger = pino({
+const logger = pino({
   name: appConfig.name,
   base: {
     version: appConfig.version,
   },
+  mixin() {
+    return RequestLogging.getLoggerContext(loggerContext)
+  },
 });
 
 const helloWorldHandler = async (ctx: Koa.Context) => {
-  // Create a request-specific logger
-  const logger = rootLogger.child(RequestLogging.contextFields(ctx));
   logger.info('About to return Hello World!');
 
   ctx.body = 'Hello world';
@@ -54,7 +62,10 @@ const router = new Router().get(
   helloWorldHandler,
 );
 
-const app = new Koa().use(router.routes()).use(router.allowedMethods());
+const app = new Koa()
+  .use(RequestLogging.createLoggerContextMiddleware(loggerContext));
+  .use(router.routes())
+  .use(router.allowedMethods())
 ```
 
 ### Example Log Entry

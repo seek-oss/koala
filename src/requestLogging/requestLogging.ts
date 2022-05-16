@@ -1,3 +1,5 @@
+import { AsyncLocalStorage } from 'async_hooks';
+
 import Koa from 'koa';
 
 import { thrown } from '../errorMiddleware/errorMiddleware';
@@ -67,6 +69,11 @@ const replaceHeaders = (
 };
 
 /**
+ * Returns context fields for the passed Koa context
+ */
+type ContextFields = (ctx: Koa.Context) => Record<string, unknown>;
+
+/**
  * Returns an object of request-specific log fields
  *
  * The returned object includes key-value pairs for the request method, route,
@@ -76,7 +83,7 @@ const replaceHeaders = (
  * The route properties assume use of `@koa/router`, and are omitted if the
  * expected metadata is not present on context.
  */
-export const contextFields = (ctx: Koa.Context): Fields => {
+export const contextFields: ContextFields = (ctx: Koa.Context): Fields => {
   const { adhocSessionID, requestID } = tracingFromContext(ctx);
 
   return {
@@ -159,4 +166,43 @@ export const createMiddleware = <StateT extends State, CustomT>(
 
       throw err;
     }
+  };
+
+/**
+ * An AsyncLocalStorage instance
+ */
+export type LoggerContext = AsyncLocalStorage<Fields>;
+
+/**
+ * The logger context. You should not need access this directly
+ * but it is exported for debugging purposes.
+ */
+export const createLoggerContext = (): LoggerContext =>
+  new AsyncLocalStorage<Fields>();
+
+/**
+ * Fetches the logger context for the current async context
+ *
+ * This should be invoked every time a logger logs to inject request context
+ */
+export const getLoggerContext = (context: LoggerContext): Fields =>
+  context.getStore() ?? {};
+
+/**
+ * Creates a new logger context middleware
+ *
+ * This stores request based data in async local storage. Retrieve the data using `getLoggerContext`
+ *
+ * This should be attached early in the middleware chain to ensure that the
+ * logger context is stored and can be accessed by the logger.
+ *
+ * @param getFieldsFn - Function to return a base set of context fields
+ */
+export const createLoggerContextMiddleware =
+  (
+    context: LoggerContext,
+    getFieldsFn: ContextFields = contextFields,
+  ): Koa.Middleware =>
+  async (ctx, next) => {
+    await context.run(getFieldsFn(ctx), next);
   };
