@@ -7,16 +7,19 @@ It's intended to work with an app-provided logger such as [pino](http://getpino.
 
 It provides 3 main features:
 
-- [`createLoggerContextStorage`](#context-logging) auto inject request based information into a logger's context
+- [`createLoggerContextStorage`](#context-logging) returns a logger context storage instance.
 - [`contextFields`](#context-fields) returns log fields related to the incoming request.
 - [`createMiddleware`](#request-log) creates a Koa middleware for logging request and response information
 
 ## Context Logging
 
-`createLoggerContextStorage` returns a logger context storage instance with two methods.
+`createLoggerContextStorage` returns a logger context storage instance with two methods: `contextMiddleware` and `mixin`. This is simply a wrapper over an [AsyncLocalStorage](https://nodejs.org/docs/latest-v16.x/api/async_context.html#class-asynclocalstorage) instance.
 
-`contextMiddleware` which is a Koa Middleware that injects the logger context into an AsyncLocalStorage instance.
-`mixin` which is a function which returns the context fields
+`contextMiddleware` is a function which returns a Koa Middleware that injects the logger context into an AsyncLocalStorage instance.
+It must be added early in the Koa Middleware chain if you want logger calls to contain request context fields. It also provides an optional
+`getFieldsFn` parameter if you wish to provide your own context fields. By default it uses the [`contextFields`](#context-fields) function.
+
+`mixin` is a function which returns the context fields from the storage. It returns an empty object if no context can be found.
 
 Attaching `contextMiddleware` to the Koa middleware chain and the `mixin` function to the logger instance allows you to import the logger instance
 in any file and still retain the current request context fields within log calls.
@@ -57,9 +60,6 @@ const app = new Koa()
   .use(router.routes())
   .use(router.allowedMethods())
 ```
-
-`contextMiddleware` must be added early in the Koa Middleware chain if you want logger calls to contain request context fields.
-It also provides a `getFieldsFn` parameter if you wish to provide your own context fields. By default it uses the [`contextFields`](#context-fields) function.
 
 ## Context Fields
 
