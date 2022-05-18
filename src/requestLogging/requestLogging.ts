@@ -71,7 +71,7 @@ const replaceHeaders = (
 /**
  * Returns context fields for the passed Koa context
  */
-type ContextFields = (ctx: Koa.Context) => Record<string, unknown>;
+export type ContextFields = (ctx: Koa.Context) => Record<string, unknown>;
 
 /**
  * Returns an object of request-specific log fields
@@ -168,41 +168,27 @@ export const createMiddleware = <StateT extends State, CustomT>(
     }
   };
 
-/**
- * An AsyncLocalStorage instance
+/*
+ * Creates a logger context storage instance
+ *
  */
-export type LoggerContext = AsyncLocalStorage<Fields>;
+export const createLoggerContextStorage = () => {
+  const loggerContext = new AsyncLocalStorage<Fields>();
 
-/**
- * The logger context. You should not need access this directly
- * but it is exported for debugging purposes.
- */
-export const createLoggerContext = (): LoggerContext =>
-  new AsyncLocalStorage<Fields>();
-
-/**
- * Fetches the logger context for the current async context
- *
- * This should be invoked every time a logger logs to inject request context
- */
-export const getLoggerContext = (context: LoggerContext): Fields =>
-  context.getStore() ?? {};
-
-/**
- * Creates a new logger context middleware
- *
- * This stores request based data in async local storage. Retrieve the data using `getLoggerContext`
- *
- * This should be attached early in the middleware chain to ensure that the
- * logger context is stored and can be accessed by the logger.
- *
- * @param getFieldsFn - Function to return a base set of context fields
- */
-export const createLoggerContextMiddleware =
-  (
-    context: LoggerContext,
-    getFieldsFn: ContextFields = contextFields,
-  ): Koa.Middleware =>
-  async (ctx, next) => {
-    await context.run(getFieldsFn(ctx), next);
+  return {
+    /**
+     * Koa Middleware that injects the logger context into an AsyncLocalStorage instance
+     * @param getFieldsFn - Optional function to return a set of fields to include in context. Defaults to `contextFields`
+     * @returns
+     */
+    contextMiddleware:
+      (getFieldsFn: ContextFields = contextFields): Koa.Middleware =>
+      async (ctx, next) => {
+        await loggerContext.run(getFieldsFn(ctx), next);
+      },
+    /**
+     * Returns fields from the logger context store
+     */
+    mixin: () => loggerContext.getStore() ?? {},
   };
+};
