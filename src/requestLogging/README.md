@@ -38,6 +38,8 @@ const logger = pino({
   mixin,
 });
 
+const loggerContextMiddleware = RequestLogging.createLoggerContextMiddleware(loggerContext);
+
 const helloWorldHandler = async (ctx: Koa.Context) => {
   logger.info('About to return Hello World!');
 
