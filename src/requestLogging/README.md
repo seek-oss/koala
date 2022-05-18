@@ -19,10 +19,9 @@ It provides 3 main features:
 It must be added early in the Koa Middleware chain if you want logger calls to contain request context fields. It also provides an optional
 `getFieldsFn` parameter if you wish to provide your own context fields. By default it uses the [`contextFields`](#context-fields) function.
 
-`mixin` is a function which returns the context fields from the storage. It returns an empty object if no context can be found.
+`mixin` is a function which returns the context fields from the storage. It returns an empty object if no context can be found. This should be called every time a logger is called. You can attach this to Pino's [mixin](https://github.com/pinojs/pino/blob/master/docs/api.md#mixin-function) field when you create a logger instance.
 
-Attaching `contextMiddleware` to the Koa middleware chain and the `mixin` function to the logger instance allows you to import the logger instance
-in any file and still retain the current request context fields within log calls.
+Attaching both `contextMiddleware` and `mixin` will then allow you to import the logger instance in any file and still retain the current request context fields within log calls.
 
 ### Usage
 
