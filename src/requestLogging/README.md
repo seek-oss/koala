@@ -13,7 +13,7 @@ It provides three main features:
 
 ## Context Logging
 
-`createContextStorage` returns a logger context storage instance with two methods: `createContextMiddleware` and `mixin`. This is simply a wrapper over an [AsyncLocalStorage](https://nodejs.org/docs/latest-v16.x/api/async_context.html#class-asynclocalstorage) instance.
+`createContextStorage` returns a logger context storage instance with two methods: `createContextMiddleware` and `mixin`. This is simply a wrapper over an [AsyncLocalStorage](https://nodejs.org/docs/latest-v16.x/api/async_context.html#class-asynclocalstorage) instance. Please note: for performance reasons it is recommended that you use Node.js version v16.2.0+ if you intend to use this.
 
 `createContextMiddleware` is a function which returns a Koa Middleware that injects the logger context into an AsyncLocalStorage instance.
 It must be added early in the Koa Middleware chain if you want logger calls to contain request context fields. It also provides an optional
