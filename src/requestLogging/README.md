@@ -78,6 +78,12 @@ The route properties assume use of `@koa/router`, and are omitted if the expecte
 The returned object can be used to construct a child logger that annotates log entries with request-specific information.
 This can be accomplished using the `child` method of Bunyan or pino loggers.
 
+You may override or supply your own fields using the optional `fields` parameter.
+
+```typescript
+const fields = contextFields(ctx, { myField: 'hello world!' });
+```
+
 `contextFields` requires access to the Koa context to generate a stable [`X-Request-Id`].
 See the [TracingHeaders add-on](../tracingHeaders/README.md) for more information.
 
