@@ -5,7 +5,7 @@
 This add-on facilitates logging information about requests and responses.
 It's intended to work with an app-provided logger such as [pino](http://getpino.io/) or [Bunyan](https://github.com/trentm/node-bunyan).
 
-It provides 3 main features:
+It provides three main features:
 
 - [`createContextStorage`](#context-logging) returns a logger context storage instance.
 - [`contextFields`](#context-fields) returns log fields related to the incoming request.
