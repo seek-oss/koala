@@ -279,8 +279,39 @@ describe('RequestLogging', () => {
     it('should set the context and return the current contents of a context storage', async () => {
       const { createContextMiddleware, mixin } = createContextStorage();
 
+      const contextMiddleware = createContextMiddleware();
+
+      // We need to grab the result from within the run() chain
+      let result: Fields = {};
+      const setResultMiddleware = jest.fn(async (_ctx: Context, next: Next) => {
+        result = mixin();
+        await next();
+      });
+
+      const handler = jest.fn((ctx: Context) => {
+        ctx.status = 201;
+      });
+
+      await createAgent(contextMiddleware, setResultMiddleware, handler)
+        .post('/my/test/service')
+        .set('Authenticated-User', 'somesercret')
+        .set('user-agent', 'Safari')
+        .set('x-session-id', '8f859d2a-46a7-4b2d-992b-3da4a18b7ab5')
+        .expect(201);
+
+      expect(result).toStrictEqual({
+        method: 'POST',
+        url: '/my/test/service',
+        'x-request-id': expect.any(String),
+        'x-session-id': '8f859d2a-46a7-4b2d-992b-3da4a18b7ab5',
+      });
+    });
+
+    it('should allow for custom fields in the context', async () => {
+      const { createContextMiddleware, mixin } = createContextStorage();
+
       const contextMiddleware = createContextMiddleware((_ctx, fields) => ({
-        some: 'field',
+        extra: 'field',
         ...fields,
       }));
 
@@ -304,7 +335,7 @@ describe('RequestLogging', () => {
 
       expect(result).toStrictEqual({
         method: 'POST',
-        some: 'field',
+        extra: 'field',
         url: '/my/test/service',
         'x-request-id': expect.any(String),
         'x-session-id': '8f859d2a-46a7-4b2d-992b-3da4a18b7ab5',
