@@ -2,7 +2,12 @@ import Router, { Middleware } from '@koa/router';
 import Koa, { Context, Next } from 'koa';
 import request from 'supertest';
 
-import { contextFields, createMiddleware } from './requestLogging';
+import {
+  Fields,
+  contextFields,
+  createContextStorage,
+  createMiddleware,
+} from './requestLogging';
 
 describe('RequestLogging', () => {
   const createAgent = (...middlewares: Middleware[]) => {
@@ -61,6 +66,41 @@ describe('RequestLogging', () => {
             },
             `
             Object {
+              "method": "GET",
+              "route": "/route/:segment",
+              "routeName": "getRoute",
+              "url": "/route/foo?bar",
+              "x-request-id": Any<String>,
+            }
+          `,
+          );
+        }),
+      );
+
+      return createAgent(router.routes())
+        .get('/route/foo?bar')
+        .set('user-agent', 'Safari')
+        .expect(200, 'hello');
+    });
+
+    it('returns extra fields along with the context data when the fields parameter is provided', () => {
+      const router = new Router().get(
+        'getRoute',
+        '/route/:segment',
+        jest.fn((ctx: Context) => {
+          ctx.status = 200;
+          ctx.body = 'hello';
+
+          const fields = contextFields(ctx, { extra: 'field!' });
+
+          expect(fields).toMatchInlineSnapshot(
+            {
+              'x-request-id': expect.any(String),
+              extra: 'field!',
+            },
+            `
+            Object {
+              "extra": "field!",
               "method": "GET",
               "route": "/route/:segment",
               "routeName": "getRoute",
@@ -219,6 +259,56 @@ describe('RequestLogging', () => {
       );
 
       expect(err).toBe(expectedError);
+    });
+  });
+
+  describe('createContextStorage', () => {
+    it('returns both a createContextMiddleware and mixin function', () => {
+      const { createContextMiddleware, mixin } = createContextStorage();
+
+      expect(createContextMiddleware).toBeInstanceOf(Function);
+      expect(mixin).toBeInstanceOf(Function);
+    });
+
+    it('should return an empty object if the context storage is empty', () => {
+      const { mixin } = createContextStorage();
+
+      expect(mixin()).toStrictEqual({});
+    });
+
+    it('should set the context and return the current contents of a context storage', async () => {
+      const { createContextMiddleware, mixin } = createContextStorage();
+
+      const contextMiddleware = createContextMiddleware((_ctx, fields) => ({
+        some: 'field',
+        ...fields,
+      }));
+
+      // We need to grab the result from within the run() chain
+      let result: Fields = {};
+      const setResultMiddleware = jest.fn(async (_ctx: Context, next: Next) => {
+        result = mixin();
+        await next();
+      });
+
+      const handler = jest.fn((ctx: Context) => {
+        ctx.status = 201;
+      });
+
+      await createAgent(contextMiddleware, setResultMiddleware, handler)
+        .post('/my/test/service')
+        .set('Authenticated-User', 'somesercret')
+        .set('user-agent', 'Safari')
+        .set('x-session-id', '8f859d2a-46a7-4b2d-992b-3da4a18b7ab5')
+        .expect(201);
+
+      expect(result).toStrictEqual({
+        method: 'POST',
+        some: 'field',
+        url: '/my/test/service',
+        'x-request-id': expect.any(String),
+        'x-session-id': '8f859d2a-46a7-4b2d-992b-3da4a18b7ab5',
+      });
     });
   });
 });

@@ -7,21 +7,28 @@ It's intended to work with an app-provided logger such as [pino](http://getpino.
 
 It provides 3 main features:
 
-- [`createLoggerContextStorage`](#context-logging) returns a logger context storage instance.
+- [`createContextStorage`](#context-logging) returns a logger context storage instance.
 - [`contextFields`](#context-fields) returns log fields related to the incoming request.
 - [`createMiddleware`](#request-log) creates a Koa middleware for logging request and response information
 
 ## Context Logging
 
-`createLoggerContextStorage` returns a logger context storage instance with two methods: `contextMiddleware` and `mixin`. This is simply a wrapper over an [AsyncLocalStorage](https://nodejs.org/docs/latest-v16.x/api/async_context.html#class-asynclocalstorage) instance.
+`createContextStorage` returns a logger context storage instance with two methods: `createContextMiddleware` and `mixin`. This is simply a wrapper over an [AsyncLocalStorage](https://nodejs.org/docs/latest-v16.x/api/async_context.html#class-asynclocalstorage) instance.
 
-`contextMiddleware` is a function which returns a Koa Middleware that injects the logger context into an AsyncLocalStorage instance.
+`createContextMiddleware` is a function which returns a Koa Middleware that injects the logger context into an AsyncLocalStorage instance.
 It must be added early in the Koa Middleware chain if you want logger calls to contain request context fields. It also provides an optional
-`getFieldsFn` parameter if you wish to provide your own context fields. By default it uses the [`contextFields`](#context-fields) function.
+`getFieldsFn` parameter if you wish to provide your own context fields alongside the default [`contextFields`](#context-fields).
+
+```typescript
+const contextMiddleware = createContextMiddleware((ctx, fields) => ({
+  advertiserId: ctx.state.advertiserId,
+  ...fields,
+}));
+```
 
 `mixin` is a function which returns the context fields from the storage. It returns an empty object if no context can be found. This should be called every time a logger is called. You can attach this to Pino's [mixin](https://github.com/pinojs/pino/blob/master/docs/api.md#mixin-function) field when you create a logger instance.
 
-Attaching both `contextMiddleware` and `mixin` will then allow you to import the logger instance in any file and still retain the current request context fields within log calls.
+Attaching the `contextMiddleware` to the Koa Middleware chain and `mixin` to the logger instance will enable you to import the logger instance in any file and still retain logger context.
 
 ### Usage
 
@@ -30,7 +37,9 @@ Attaching both `contextMiddleware` and `mixin` will then allow you to import the
 import pino from 'pino';
 import { RequestLogging } from 'seek-koala';
 
-const { contextMiddleware, mixin } = createLoggerContextStorage();
+const { createContextMiddleware, mixin } = createLoggerContextStorage();
+
+const contextMiddleware = createContextMiddleware();
 
 const logger = pino({
   name: appConfig.name,
@@ -53,7 +62,7 @@ const router = new Router().get(
 );
 
 const app = new Koa()
-  .use(contextMiddleware());
+  .use(contextMiddleware);
   .use(router.routes())
   .use(router.allowedMethods())
 ```
