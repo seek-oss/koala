@@ -20,7 +20,9 @@ It must be added early in the Koa Middleware chain if you want logger calls to c
 `getFieldsFn` parameter if you wish to provide your own context fields alongside the default [`contextFields`](#context-fields).
 
 ```typescript
-const contextMiddleware = createContextMiddleware((ctx, fields) => ({
+const contextMiddleware = createContextMiddleware();
+
+const customContextMiddleware = createContextMiddleware((ctx, fields) => ({
   advertiserId: ctx.state.advertiserId,
   ...fields,
 }));
@@ -81,7 +83,9 @@ This can be accomplished using the `child` method of Bunyan or pino loggers.
 You may override or supply your own fields using the optional `fields` parameter.
 
 ```typescript
-const fields = contextFields(ctx, { myField: 'hello world!' });
+const fields = contextFields(ctx);
+
+const customFields = contextFields(ctx, { myField: 'hello world!' });
 ```
 
 `contextFields` requires access to the Koa context to generate a stable [`X-Request-Id`].
