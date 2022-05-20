@@ -87,7 +87,7 @@ export type ContextFields = (
  * expected metadata is not present on context.
  *
  * @param ctx - Koa Context
- * @param fields - Optional fields to add to the context
+ * @param fields - Optional fields to add to the object
  */
 export const contextFields: ContextFields = (ctx, fields): Fields => {
   const { adhocSessionID, requestID } = tracingFromContext(ctx);
