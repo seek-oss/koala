@@ -85,6 +85,9 @@ export type ContextFields = (
  *
  * The route properties assume use of `@koa/router`, and are omitted if the
  * expected metadata is not present on context.
+ *
+ * @param ctx - Koa Context
+ * @param fields - Optional fields to add to the context
  */
 export const contextFields: ContextFields = (ctx, fields): Fields => {
   const { adhocSessionID, requestID } = tracingFromContext(ctx);
@@ -183,7 +186,6 @@ export const createContextStorage = () => {
     /**
      * Koa Middleware that injects the logger context into an AsyncLocalStorage instance
      * @param getFieldsFn - Optional function to return a set of fields to include in context. Defaults to `contextFields`
-     * @returns
      */
     createContextMiddleware:
       (getFieldsFn: ContextFields = contextFields): Koa.Middleware =>
