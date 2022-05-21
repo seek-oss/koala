@@ -10,6 +10,7 @@
     "@koa/router": "10.1.1",
     "@types/koa": "2.13.4",
     "@types/koa__router": "8.0.11",
+    "@types/node": "16.0.0",
     "@types/supertest": "2.0.12",
     "@types/uuid": "8.3.4",
     "hot-shots": "9.0.0",
@@ -18,7 +19,7 @@
     "supertest": "6.2.2"
   },
   "engines": {
-    "node": ">=10.7"
+    "node": ">=12.17"
   },
   "files": [
     "lib*/**/*.d.ts",

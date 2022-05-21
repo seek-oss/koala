@@ -1,3 +1,5 @@
+import { AsyncLocalStorage } from 'async_hooks';
+
 import Koa from 'koa';
 
 import { thrown } from '../errorMiddleware/errorMiddleware';
@@ -67,6 +69,14 @@ const replaceHeaders = (
 };
 
 /**
+ * Returns context fields for the passed Koa context
+ */
+export type ContextFields = (
+  ctx: Koa.Context,
+  fields?: Fields,
+) => Record<string, unknown>;
+
+/**
  * Returns an object of request-specific log fields
  *
  * The returned object includes key-value pairs for the request method, route,
@@ -75,8 +85,11 @@ const replaceHeaders = (
  *
  * The route properties assume use of `@koa/router`, and are omitted if the
  * expected metadata is not present on context.
+ *
+ * @param ctx - Koa Context
+ * @param fields - Optional fields to add to the object
  */
-export const contextFields = (ctx: Koa.Context): Fields => {
+export const contextFields: ContextFields = (ctx, fields): Fields => {
   const { adhocSessionID, requestID } = tracingFromContext(ctx);
 
   return {
@@ -92,6 +105,7 @@ export const contextFields = (ctx: Koa.Context): Fields => {
     ...(typeof adhocSessionID === 'string' && {
       'x-session-id': adhocSessionID,
     }),
+    ...fields,
   };
 };
 
@@ -160,3 +174,27 @@ export const createMiddleware = <StateT extends State, CustomT>(
       throw err;
     }
   };
+
+/*
+ * Creates a logger context storage instance
+ *
+ */
+export const createContextStorage = () => {
+  const loggerContext = new AsyncLocalStorage<Fields>();
+
+  return {
+    /**
+     * Koa Middleware that injects the logger context into an AsyncLocalStorage instance
+     * @param getFieldsFn - Optional function to return a set of fields to include in context. Defaults to `contextFields`
+     */
+    createContextMiddleware:
+      (getFieldsFn: ContextFields = contextFields): Koa.Middleware =>
+      async (ctx, next) => {
+        await loggerContext.run(getFieldsFn(ctx, contextFields(ctx)), next);
+      },
+    /**
+     * Returns fields from the logger context store
+     */
+    mixin: () => loggerContext.getStore() ?? {},
+  };
+};

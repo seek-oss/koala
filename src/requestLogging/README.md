@@ -5,11 +5,69 @@
 This add-on facilitates logging information about requests and responses.
 It's intended to work with an app-provided logger such as [pino](http://getpino.io/) or [Bunyan](https://github.com/trentm/node-bunyan).
 
-It provides two main features:
+It provides three main features:
 
+- [`createContextStorage`](#context-logging) returns a logger context storage instance.
 - [`contextFields`](#context-fields) returns log fields related to the incoming request.
-
 - [`createMiddleware`](#request-log) creates a Koa middleware for logging request and response information
+
+## Context Logging
+
+`createContextStorage` returns a logger context storage instance with two methods: `createContextMiddleware` and `mixin`. This is simply a wrapper over an [AsyncLocalStorage](https://nodejs.org/docs/latest-v16.x/api/async_context.html#class-asynclocalstorage) instance. Please note: for performance reasons it is recommended that you use Node.js version v16.2.0+ if you intend to use this.
+
+`createContextMiddleware` is a function which returns a Koa Middleware that injects the logger context into an AsyncLocalStorage instance.
+It must be added early in the Koa Middleware chain if you want logger calls to contain request context fields. It also provides an optional
+`getFieldsFn` parameter if you wish to provide your own context fields alongside the default [`contextFields`](#context-fields).
+
+```typescript
+const contextMiddleware = createContextMiddleware();
+
+const customContextMiddleware = createContextMiddleware((ctx, fields) => ({
+  advertiserId: ctx.state.advertiserId,
+  ...fields,
+}));
+```
+
+`mixin` is a function which returns the context fields from the storage. It returns an empty object if no context can be found. This should be called every time a logger is called. You can attach this to Pino's [mixin](https://github.com/pinojs/pino/blob/master/docs/api.md#mixin-function) field when you create a logger instance.
+
+Attaching the `contextMiddleware` to the Koa Middleware chain and `mixin` to the logger instance will enable you to import the logger instance in any file and still retain logger context.
+
+### Usage
+
+```typescript
+// This example uses pino. See the next section for a Bunyan example.
+import pino from 'pino';
+import { RequestLogging } from 'seek-koala';
+
+const { createContextMiddleware, mixin } = createLoggerContextStorage();
+
+const contextMiddleware = createContextMiddleware();
+
+const logger = pino({
+  name: appConfig.name,
+  base: {
+    version: appConfig.version,
+  },
+  mixin,
+});
+
+const helloWorldHandler = async (ctx: Koa.Context) => {
+  logger.info('About to return Hello World!');
+
+  ctx.body = 'Hello world';
+};
+
+const router = new Router().get(
+  'readGreeting',
+  '/internal/:greeting',
+  helloWorldHandler,
+);
+
+const app = new Koa()
+  .use(contextMiddleware);
+  .use(router.routes())
+  .use(router.allowedMethods())
+```
 
 ## Context Fields
 
@@ -22,40 +80,16 @@ The route properties assume use of `@koa/router`, and are omitted if the expecte
 The returned object can be used to construct a child logger that annotates log entries with request-specific information.
 This can be accomplished using the `child` method of Bunyan or pino loggers.
 
-`contextFields` requires access to the Koa context to generate a stable [`X-Request-Id`].
-See the [TracingHeaders add-on](../tracingHeaders/README.md) for more information.
-
-### Usage
+You may override or supply your own fields using the optional `fields` parameter.
 
 ```typescript
-// This example uses pino. See the next section for a Bunyan example.
-import pino from 'pino';
-import { RequestLogging } from 'seek-koala';
+const fields = contextFields(ctx);
 
-// Create a root logger with the app name and version
-const rootLogger = pino({
-  name: appConfig.name,
-  base: {
-    version: appConfig.version,
-  },
-});
-
-const helloWorldHandler = async (ctx: Koa.Context) => {
-  // Create a request-specific logger
-  const logger = rootLogger.child(RequestLogging.contextFields(ctx));
-  logger.info('About to return Hello World!');
-
-  ctx.body = 'Hello world';
-};
-
-const router = new Router().get(
-  'readGreeting',
-  '/internal/:greeting',
-  helloWorldHandler,
-);
-
-const app = new Koa().use(router.routes()).use(router.allowedMethods());
+const customFields = contextFields(ctx, { myField: 'hello world!' });
 ```
+
+`contextFields` requires access to the Koa context to generate a stable [`X-Request-Id`].
+See the [TracingHeaders add-on](../tracingHeaders/README.md) for more information.
 
 ### Example Log Entry
 
@@ -75,6 +109,39 @@ const app = new Koa().use(router.routes()).use(router.allowedMethods());
   "time": "2018-10-16T00:15:35.009Z",
   "version": "abcdefg.123"
 }
+```
+
+### Usage
+
+```typescript
+// This example uses pino. See the next section for a Bunyan example.
+import pino from 'pino';
+import { RequestLogging } from 'seek-koala';
+
+// Create a root logger with the app name and version
+const rootLogger = pino({
+  name: appConfig.name,
+  base: {
+    version: appConfig.version,
+  },
+});
+
+const helloWorldHandler = async (ctx: Koa.Context) => {
+  // Create a request-specific logger
+  // NB: This is not required if you are using the logger context storage implementation
+  const logger = rootLogger.child(RequestLogging.contextFields(ctx));
+  logger.info('About to return Hello World!');
+
+  ctx.body = 'Hello world';
+};
+
+const router = new Router().get(
+  'readGreeting',
+  '/internal/:greeting',
+  helloWorldHandler,
+);
+
+const app = new Koa().use(router.routes()).use(router.allowedMethods());
 ```
 
 ## Request Log
