@@ -193,8 +193,8 @@ export const createContextStorage = () => {
         await loggerContext.run(getFieldsFn(ctx, contextFields(ctx)), next);
       },
     /**
-     * Returns fields from the logger context store
+     * Returns a shallow copy of fields from the logger context store
      */
-    mixin: () => loggerContext.getStore() ?? {},
+    mixin: () => ({ ...loggerContext.getStore() }),
   };
 };
