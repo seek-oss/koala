@@ -342,7 +342,7 @@ describe('RequestLogging', () => {
       });
     });
 
-    it('should not mutate the current context if fields are changed', async () => {
+    it('should not mutate the current context if surface level fields are changed', async () => {
       const { createContextMiddleware, mixin } = createContextStorage();
 
       const contextMiddleware = createContextMiddleware();
