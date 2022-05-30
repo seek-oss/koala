@@ -1,5 +1,6 @@
+import { randomUUID } from 'crypto';
+
 import Koa from 'koa';
-import { v4 as uuidv4 } from 'uuid';
 
 import { AppIdentifier } from '../types';
 
@@ -58,7 +59,7 @@ const generateTracing = (ctx: Koa.Context): SEEKTracing => {
   const header = ctx.request.header as Record<string, string>;
 
   const tracing: SEEKTracing = {
-    requestID: header[REQUEST_ID_HEADER] || uuidv4(),
+    requestID: header[REQUEST_ID_HEADER] || randomUUID(),
   };
 
   for (const [headerName, tracingProp] of SESSION_HEADER_TO_TRACING_PROP) {

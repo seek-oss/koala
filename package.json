@@ -2,9 +2,7 @@
   "bugs": {
     "url": "https://github.com/seek-oss/koala/issues"
   },
-  "dependencies": {
-    "uuid": "^8.0.0"
-  },
+  "dependencies": {},
   "description": "Koa add-ons for SEEK-standard tracing, logging and metrics",
   "devDependencies": {
     "@koa/router": "10.1.1",
@@ -12,14 +10,13 @@
     "@types/koa__router": "8.0.11",
     "@types/node": "16.0.0",
     "@types/supertest": "2.0.12",
-    "@types/uuid": "8.3.4",
     "hot-shots": "9.0.0",
     "koa": "2.13.4",
     "skuba": "4.2.2",
     "supertest": "6.2.2"
   },
   "engines": {
-    "node": ">=12.17"
+    "node": ">=14.17"
   },
   "files": [
     "lib*/**/*.d.ts",
