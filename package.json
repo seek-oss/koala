@@ -12,7 +12,7 @@
     "@types/supertest": "2.0.12",
     "hot-shots": "9.0.0",
     "koa": "2.13.4",
-    "skuba": "4.2.2",
+    "skuba": "4.3.0",
     "supertest": "6.2.2"
   },
   "engines": {
