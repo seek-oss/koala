@@ -5,7 +5,7 @@
   "dependencies": {},
   "description": "Koa add-ons for SEEK-standard tracing, logging and metrics",
   "devDependencies": {
-    "@koa/router": "10.1.1",
+    "@koa/router": "12.0.0",
     "@types/koa": "2.13.4",
     "@types/koa__router": "8.0.11",
     "@types/node": "16.11.43",
