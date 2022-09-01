@@ -33,7 +33,7 @@ describe('RequestLogging', () => {
             'x-request-id': expect.any(String),
           },
           `
-          Object {
+          {
             "method": "GET",
             "url": "/route/foo?bar",
             "x-request-id": Any<String>,
@@ -65,7 +65,7 @@ describe('RequestLogging', () => {
               'x-request-id': expect.any(String),
             },
             `
-            Object {
+            {
               "method": "GET",
               "route": "/route/:segment",
               "routeName": "getRoute",
@@ -99,7 +99,7 @@ describe('RequestLogging', () => {
               extra: 'field!',
             },
             `
-            Object {
+            {
               "extra": "field!",
               "method": "GET",
               "route": "/route/:segment",
@@ -135,7 +135,7 @@ describe('RequestLogging', () => {
         .set('user-agent', 'Safari')
         .expect(201);
 
-      expect(logMock).toBeCalledTimes(1);
+      expect(logMock).toHaveBeenCalledTimes(1);
 
       const [, fields, err] = logMock.mock.calls[0];
 
@@ -144,12 +144,13 @@ describe('RequestLogging', () => {
           headers: {
             host: expect.any(String),
           },
+
           latency: expect.any(Number),
           'x-request-id': expect.any(String),
         },
         `
-        Object {
-          "headers": Object {
+        {
+          "headers": {
             "accept-encoding": "gzip, deflate",
             "authenticated-user": "🐨 REDACTED 🙅",
             "connection": "close",
@@ -185,7 +186,7 @@ describe('RequestLogging', () => {
         .set('user-agent', 'Safari')
         .expect(201);
 
-      expect(logMock).not.toBeCalled();
+      expect(logMock).not.toHaveBeenCalled();
     });
 
     it('logs a failed request', async () => {
@@ -223,7 +224,7 @@ describe('RequestLogging', () => {
         .set('user-agent', 'Safari')
         .expect(418);
 
-      expect(logMock).toBeCalledTimes(1);
+      expect(logMock).toHaveBeenCalledTimes(1);
 
       const [, fields, err] = logMock.mock.calls[0];
 
@@ -232,13 +233,14 @@ describe('RequestLogging', () => {
           headers: {
             host: expect.any(String),
           },
+
           latency: expect.any(Number),
           'x-request-id': expect.any(String),
         },
         `
-        Object {
+        {
           "err": [Error: Something tragic happened],
-          "headers": Object {
+          "headers": {
             "accept": undefined,
             "accept-encoding": "gzip, deflate",
             "authorization": "retain-me",
