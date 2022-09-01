@@ -33,7 +33,7 @@ describe('RequestLogging', () => {
             'x-request-id': expect.any(String),
           },
           `
-          Object {
+          {
             "method": "GET",
             "url": "/route/foo?bar",
             "x-request-id": Any<String>,
@@ -65,7 +65,7 @@ describe('RequestLogging', () => {
               'x-request-id': expect.any(String),
             },
             `
-            Object {
+            {
               "method": "GET",
               "route": "/route/:segment",
               "routeName": "getRoute",
@@ -99,7 +99,7 @@ describe('RequestLogging', () => {
               extra: 'field!',
             },
             `
-            Object {
+            {
               "extra": "field!",
               "method": "GET",
               "route": "/route/:segment",
@@ -144,12 +144,13 @@ describe('RequestLogging', () => {
           headers: {
             host: expect.any(String),
           },
+
           latency: expect.any(Number),
           'x-request-id': expect.any(String),
         },
         `
-        Object {
-          "headers": Object {
+        {
+          "headers": {
             "accept-encoding": "gzip, deflate",
             "authenticated-user": "🐨 REDACTED 🙅",
             "connection": "close",
@@ -232,13 +233,14 @@ describe('RequestLogging', () => {
           headers: {
             host: expect.any(String),
           },
+
           latency: expect.any(Number),
           'x-request-id': expect.any(String),
         },
         `
-        Object {
+        {
           "err": [Error: Something tragic happened],
-          "headers": Object {
+          "headers": {
             "accept": undefined,
             "accept-encoding": "gzip, deflate",
             "authorization": "retain-me",
