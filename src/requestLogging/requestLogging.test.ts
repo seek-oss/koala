@@ -135,7 +135,7 @@ describe('RequestLogging', () => {
         .set('user-agent', 'Safari')
         .expect(201);
 
-      expect(logMock).toBeCalledTimes(1);
+      expect(logMock).toHaveBeenCalledTimes(1);
 
       const [, fields, err] = logMock.mock.calls[0];
 
@@ -185,7 +185,7 @@ describe('RequestLogging', () => {
         .set('user-agent', 'Safari')
         .expect(201);
 
-      expect(logMock).not.toBeCalled();
+      expect(logMock).not.toHaveBeenCalled();
     });
 
     it('logs a failed request', async () => {
@@ -223,7 +223,7 @@ describe('RequestLogging', () => {
         .set('user-agent', 'Safari')
         .expect(418);
 
-      expect(logMock).toBeCalledTimes(1);
+      expect(logMock).toHaveBeenCalledTimes(1);
 
       const [, fields, err] = logMock.mock.calls[0];
 
