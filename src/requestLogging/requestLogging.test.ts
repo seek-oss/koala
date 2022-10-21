@@ -376,5 +376,47 @@ describe('RequestLogging', () => {
         'x-session-id': '8f859d2a-46a7-4b2d-992b-3da4a18b7ab5',
       });
     });
+
+    it('should support mutating Koa context via nested mixin', async () => {
+      const { createContextMiddleware, mixin } = createContextStorage();
+
+      const contextMiddleware = createContextMiddleware((ctx) => ({
+        availableAtMiddleware: ctx.request.url,
+        availableAtCallSite: ctx.state.idFromAuthToken,
+      }));
+
+      // We need to grab the result from within the run() chain
+      let staticRootResult: Fields = {};
+      let dynamicNestedResult: Fields = {};
+      const setResultMiddleware = jest.fn(async (ctx: Context, next: Next) => {
+        ctx.state.idFromAuthToken = 123;
+
+        staticRootResult = mixin();
+        dynamicNestedResult = contextMiddleware.mixin();
+
+        await next();
+      });
+
+      const handler = jest.fn((ctx: Context) => {
+        ctx.status = 201;
+      });
+
+      await createAgent(contextMiddleware, setResultMiddleware, handler)
+        .post('/my/test/service')
+        .set('Authenticated-User', 'somesercret')
+        .set('user-agent', 'Safari')
+        .set('x-session-id', '8f859d2a-46a7-4b2d-992b-3da4a18b7ab5')
+        .expect(201);
+
+      expect(staticRootResult).toStrictEqual({
+        availableAtCallSite: undefined,
+        availableAtMiddleware: '/my/test/service',
+      });
+
+      expect(dynamicNestedResult).toStrictEqual({
+        availableAtCallSite: 123,
+        availableAtMiddleware: '/my/test/service',
+      });
+    });
   });
 });

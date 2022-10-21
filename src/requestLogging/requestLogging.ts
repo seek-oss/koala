@@ -180,21 +180,35 @@ export const createMiddleware = <StateT extends State, CustomT>(
  *
  */
 export const createContextStorage = () => {
-  const loggerContext = new AsyncLocalStorage<Fields>();
+  const dynamicContextStorage = new AsyncLocalStorage<Koa.Context>();
+  const staticFieldStorage = new AsyncLocalStorage<Fields>();
 
   return {
     /**
      * Koa Middleware that injects the logger context into an AsyncLocalStorage instance
      * @param getFieldsFn - Optional function to return a set of fields to include in context. Defaults to `contextFields`
      */
-    createContextMiddleware:
-      (getFieldsFn: ContextFields = contextFields): Koa.Middleware =>
-      async (ctx, next) => {
-        await loggerContext.run(getFieldsFn(ctx, contextFields(ctx)), next);
-      },
+    createContextMiddleware: (getFieldsFn: ContextFields = contextFields) => {
+      const middleware: Koa.Middleware = async (ctx, next) => {
+        await dynamicContextStorage.run(ctx, () =>
+          staticFieldStorage.run(getFieldsFn(ctx, contextFields(ctx)), next),
+        );
+      };
+
+      const mixin = () => {
+        const ctx = dynamicContextStorage.getStore();
+
+        return ctx ? getFieldsFn(ctx, contextFields(ctx)) : {};
+      };
+
+      return Object.assign(middleware, { mixin });
+    },
+
+    // TODO: should we get rid of this, or is there value in amortising the cost
+    // of `getFieldsFn` and keeping our async local storage minimal?
     /**
      * Returns a shallow copy of fields from the logger context store. For performance reason we only copy the surface level fields.
      */
-    mixin: () => ({ ...loggerContext.getStore() }),
+    mixin: () => ({ ...staticFieldStorage.getStore() }),
   };
 };
