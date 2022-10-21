@@ -385,6 +385,10 @@ describe('RequestLogging', () => {
         availableAtCallSite: ctx.state.idFromAuthToken,
       }));
 
+      // These should be callable but not useful at this point
+      expect(mixin()).toStrictEqual({});
+      expect(contextMiddleware.mixin()).toStrictEqual({});
+
       // We need to grab the result from within the run() chain
       let staticRootResult: Fields = {};
       let dynamicNestedResult: Fields = {};
