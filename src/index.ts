@@ -6,4 +6,4 @@ export * as SecureHeaders from './secureHeaders/secureHeaders';
 export * as TracingHeaders from './tracingHeaders/tracingHeaders';
 export * as VersionMiddleware from './versionMiddleware/versionMiddleware';
 
-export { AppIdentifier } from './types';
+export type { AppIdentifier } from './types';
