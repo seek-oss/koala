@@ -1,9 +1,35 @@
 {
+  "name": "seek-koala",
+  "version": "0.0.0-semantically-released",
+  "private": false,
+  "description": "Koa add-ons for SEEK-standard tracing, logging and metrics",
+  "homepage": "https://github.com/seek-oss/koala#readme",
   "bugs": {
     "url": "https://github.com/seek-oss/koala/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seek-oss/koala.git"
+  },
+  "license": "MIT",
+  "sideEffects": false,
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
+  "types": "./lib/index.d.ts",
+  "files": [
+    "lib*/**/*.d.ts",
+    "lib*/**/*.js",
+    "lib*/**/*.js.map"
+  ],
+  "scripts": {
+    "build": "skuba build",
+    "format": "skuba format",
+    "lint": "skuba lint",
+    "release": "yarn build && skuba release",
+    "test": "skuba test",
+    "test:ci": "skuba test --coverage"
+  },
   "dependencies": {},
-  "description": "Koa add-ons for SEEK-standard tracing, logging and metrics",
   "devDependencies": {
     "@koa/router": "12.0.0",
     "@types/koa": "2.13.4",
@@ -15,19 +41,6 @@
     "skuba": "5.1.0",
     "supertest": "6.3.1"
   },
-  "engines": {
-    "node": ">=14.17"
-  },
-  "files": [
-    "lib*/**/*.d.ts",
-    "lib*/**/*.js",
-    "lib*/**/*.js.map"
-  ],
-  "homepage": "https://github.com/seek-oss/koala#readme",
-  "license": "MIT",
-  "main": "./lib/index.js",
-  "module": "./lib/index.js",
-  "name": "seek-koala",
   "peerDependencies": {
     "hot-shots": "5.x || 6.x || 7.x || 8.x || 9.x",
     "koa": "2"
@@ -37,26 +50,13 @@
       "optional": true
     }
   },
-  "private": false,
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/seek-oss/koala.git"
+  "engines": {
+    "node": ">=14.17"
   },
-  "scripts": {
-    "build": "skuba build",
-    "format": "skuba format",
-    "lint": "skuba lint",
-    "release": "yarn build && skuba release",
-    "test": "skuba test",
-    "test:ci": "skuba test --coverage"
-  },
-  "sideEffects": false,
   "skuba": {
     "entryPoint": "src/index.ts",
     "template": null,
     "type": "package",
     "version": "3.7.3"
-  },
-  "types": "./lib/index.d.ts",
-  "version": "0.0.0-semantically-released"
+  }
 }
