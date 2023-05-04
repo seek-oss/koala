@@ -1,9 +1,9 @@
-import Router, { Middleware } from '@koa/router';
-import Koa, { Context, Next } from 'koa';
+import Router, { type Middleware } from '@koa/router';
+import Koa, { type Context, type Next } from 'koa';
 import request from 'supertest';
 
 import {
-  Fields,
+  type Fields,
   contextFields,
   createContextStorage,
   createMiddleware,

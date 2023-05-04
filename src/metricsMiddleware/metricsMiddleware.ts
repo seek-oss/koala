@@ -1,6 +1,6 @@
-import Koa from 'koa';
+import type Koa from 'koa';
 
-import { StatsD } from './statsD';
+import type { StatsD } from './statsD';
 
 /**
  * Returns metrics tags for the passed Koa context

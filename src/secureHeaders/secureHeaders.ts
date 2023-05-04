@@ -1,4 +1,4 @@
-import Koa from 'koa';
+import type Koa from 'koa';
 
 /**
  * Adds HTTP response headers that opt-in to stricter browser security policies

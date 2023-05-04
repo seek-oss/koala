@@ -1,4 +1,4 @@
-import { Context, Middleware } from 'koa';
+import type { Context, Middleware } from 'koa';
 
 /**
  * @see {@link https://github.com/microsoft/TypeScript/issues/1863}

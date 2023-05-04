@@ -1,4 +1,4 @@
-import { Middleware } from 'koa';
+import type { Middleware } from 'koa';
 
 /**
  * Wraps an asynchronously-initialised middleware to allow it to be
