@@ -1,4 +1,4 @@
-import Koa from 'koa';
+import type Koa from 'koa';
 
 import { create } from './versionMiddleware';
 

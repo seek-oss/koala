@@ -1,6 +1,6 @@
-import Koa from 'koa';
+import type Koa from 'koa';
 
-import { AppIdentifier } from '../types';
+import type { AppIdentifier } from '../types';
 
 /**
  * Creates a middleware for attaching app version information to responses

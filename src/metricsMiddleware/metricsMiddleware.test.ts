@@ -1,5 +1,5 @@
-import { StatsD } from 'hot-shots';
-import Koa from 'koa';
+import type { StatsD } from 'hot-shots';
+import type Koa from 'koa';
 
 import { create } from './metricsMiddleware';
 

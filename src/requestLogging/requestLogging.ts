@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from 'async_hooks';
 
-import Koa from 'koa';
+import type Koa from 'koa';
 
 import { thrown } from '../errorMiddleware/errorMiddleware';
 import { tracingFromContext } from '../tracingHeaders/tracingHeaders';
