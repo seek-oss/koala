@@ -6,7 +6,7 @@ const mockCtxWithHeaders = (header: Record<string, string>): Koa.Context =>
   ({
     request: { header },
     state: {},
-  } as unknown as Koa.Context);
+  }) as unknown as Koa.Context;
 
 describe('TracingHeaders', () => {
   describe('tracingFromContext', () => {
