@@ -1,4 +1,4 @@
-import type { Context, Middleware } from 'koa';
+import { type Context, HttpError, type Middleware } from 'koa';
 
 /**
  * @see {@link https://github.com/microsoft/TypeScript/issues/1863}
@@ -74,7 +74,11 @@ export const handle: Middleware = async (ctx, next) => {
   } catch (err: unknown) {
     ctx.state[ERROR_STATE_KEY] = err;
 
-    if (!isObject(err) || typeof err.status !== 'number') {
+    if (
+      !isObject(err) ||
+      typeof err.status !== 'number' ||
+      (!(err instanceof HttpError) && err.isJsonResponse === undefined)
+    ) {
       ctx.status = 500;
       ctx.body = '';
       return;
@@ -85,6 +89,7 @@ export const handle: Middleware = async (ctx, next) => {
 
     if (
       expose &&
+      err.body &&
       err.isJsonResponse === true &&
       // Prefer JSON ourselves if the request has no preference
       ctx.accepts(['application/json', 'text/plain']) === 'application/json'
@@ -93,6 +98,8 @@ export const handle: Middleware = async (ctx, next) => {
     } else {
       ctx.body = (expose && err.message) || '';
     }
+
+    return;
   }
 };
 

@@ -137,4 +137,43 @@ describe('errorMiddleware', () => {
 
     await agent.get('/').expect(500, '');
   });
+
+  it('respects status if isJsonResponse is present', async () => {
+    class JsonResponseError extends Error {
+      constructor(
+        message: string,
+        public isJsonResponse: boolean,
+        public status: number,
+      ) {
+        super(message);
+
+        this.isJsonResponse = isJsonResponse;
+        this.status = status;
+      }
+    }
+
+    mockNext.mockImplementation(() => {
+      throw new JsonResponseError('Badness!', true, 418);
+    });
+
+    await agent.get('/').expect(418, 'Badness!');
+
+    mockNext.mockImplementation(() => {
+      throw new JsonResponseError('Badness!', true, 400);
+    });
+
+    await agent.get('/').expect(400, 'Badness!');
+  });
+
+  it('ignores status for non-HTTP non-Koa error', async () => {
+    class GaxiosError extends Error {
+      status = 400;
+    }
+
+    mockNext.mockImplementation(() => {
+      throw new GaxiosError('Badness!');
+    });
+
+    await agent.get('/').expect(500, '');
+  });
 });
