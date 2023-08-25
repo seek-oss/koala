@@ -1,3 +1,4 @@
+import createError from 'http-errors';
 import Koa from 'koa';
 import request from 'supertest';
 
@@ -136,6 +137,20 @@ describe('errorMiddleware', () => {
     });
 
     await agent.get('/').expect(500, '');
+  });
+
+  it('respects status from http-errors', async () => {
+    mockNext.mockImplementation(() => {
+      throw new createError.ImATeapot('Badness!');
+    });
+
+    await agent.get('/').expect(418, 'Badness!');
+
+    mockNext.mockImplementation(() => {
+      throw new createError.BadRequest('Badness!');
+    });
+
+    await agent.get('/').expect(400, 'Badness!');
   });
 
   it('respects status if isJsonResponse is present', async () => {
