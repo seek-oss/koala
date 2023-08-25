@@ -47,9 +47,9 @@ export class JsonResponse extends Error {
  *
  * https://github.com/koajs/koa/wiki/Error-Handling#catching-downstream-errors
  *
- * This tries to extract a numeric error `status` to serve as the response
- * status, and will set the error message as the response body for non-5xx
- * statuses. It works well with Koa's built-in `ctx.throw`.
+ * If you use `http-errors` or Koa's built-in `ctx.throw`, this tries to extract
+ * a numeric error `status` to serve as the response status, and will set the
+ * error message as the response body for non-5xx statuses.
  *
  * This includes support for a JSON response body by throwing an error with
  * `isJsonResponse` set to `true`. If the request accepts `application/json` the
