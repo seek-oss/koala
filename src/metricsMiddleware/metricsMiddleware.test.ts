@@ -9,7 +9,7 @@ describe('metricsMiddleware', () => {
       state: {},
       method: 'GET',
       ...fields,
-    } as unknown as Koa.Context);
+    }) as unknown as Koa.Context;
 
   it('should record metrics for a successful request', async () => {
     const mockDistribution = jest.fn();
