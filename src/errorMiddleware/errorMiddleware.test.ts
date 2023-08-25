@@ -1,3 +1,4 @@
+import createError from 'http-errors';
 import Koa from 'koa';
 import request from 'supertest';
 
@@ -133,6 +134,59 @@ describe('errorMiddleware', () => {
     mockNext.mockImplementation(() => {
       /* eslint-disable-next-line no-throw-literal */
       throw 'bad';
+    });
+
+    await agent.get('/').expect(500, '');
+  });
+
+  it('respects status from http-errors', async () => {
+    mockNext.mockImplementation(() => {
+      throw new createError.ImATeapot('Badness!');
+    });
+
+    await agent.get('/').expect(418, 'Badness!');
+
+    mockNext.mockImplementation(() => {
+      throw new createError.BadRequest('Badness!');
+    });
+
+    await agent.get('/').expect(400, 'Badness!');
+  });
+
+  it('respects status if isJsonResponse is present', async () => {
+    class JsonResponseError extends Error {
+      constructor(
+        message: string,
+        public isJsonResponse: boolean,
+        public status: number,
+      ) {
+        super(message);
+
+        this.isJsonResponse = isJsonResponse;
+        this.status = status;
+      }
+    }
+
+    mockNext.mockImplementation(() => {
+      throw new JsonResponseError('Badness!', true, 418);
+    });
+
+    await agent.get('/').expect(418, 'Badness!');
+
+    mockNext.mockImplementation(() => {
+      throw new JsonResponseError('Badness!', true, 400);
+    });
+
+    await agent.get('/').expect(400, 'Badness!');
+  });
+
+  it('ignores status for non-HTTP non-Koa error', async () => {
+    class GaxiosError extends Error {
+      status = 400;
+    }
+
+    mockNext.mockImplementation(() => {
+      throw new GaxiosError('Badness!');
     });
 
     await agent.get('/').expect(500, '');
