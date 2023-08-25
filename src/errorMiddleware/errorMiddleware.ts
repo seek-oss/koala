@@ -37,7 +37,10 @@ export class JsonResponse extends Error {
    * @param body - JavaScript value used for requests accepting
    *               `application/json`. This is encoded as JSON in the response.
    */
-  constructor(message: string, public body: unknown) {
+  constructor(
+    message: string,
+    public body: unknown,
+  ) {
     super(message);
   }
 }
@@ -95,10 +98,10 @@ export const handle: Middleware = async (ctx, next) => {
       ctx.accepts(['application/json', 'text/plain']) === 'application/json'
     ) {
       ctx.body = err.body;
-    } else {
-      ctx.body = (expose && err.message) || '';
+      return;
     }
 
+    ctx.body = (expose && err.message) || '';
     return;
   }
 };

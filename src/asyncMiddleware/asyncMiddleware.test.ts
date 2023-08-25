@@ -8,7 +8,7 @@ describe('asyncMiddleware', () => {
       state: {},
       method: 'GET',
       ...fields,
-    } as unknown as Koa.Context);
+    }) as unknown as Koa.Context;
 
   const next = jest.fn().mockRejectedValue(new Error('why are you here'));
 
