@@ -153,6 +153,28 @@ describe('errorMiddleware', () => {
     await agent.get('/').expect(400, 'Badness!');
   });
 
+  it('respects status from a http-errors-compatible error', async () => {
+    mockNext.mockImplementation(() => {
+      throw Object.assign(new Error('Badness!'), {
+        expose: false,
+        status: 418,
+        statusCode: 418,
+      });
+    });
+
+    await agent.get('/').expect(418, 'Badness!');
+
+    mockNext.mockImplementation(() => {
+      throw Object.assign(new Error('Badness!'), {
+        expose: true,
+        status: 400,
+        statusCode: 400,
+      });
+    });
+
+    await agent.get('/').expect(400, 'Badness!');
+  });
+
   it('respects status if isJsonResponse is present', async () => {
     class JsonResponseError extends Error {
       constructor(
