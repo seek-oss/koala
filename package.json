@@ -44,7 +44,7 @@
     "supertest": "6.3.3"
   },
   "peerDependencies": {
-    "hot-shots": "5.x || 6.x || 7.x || 8.x || 9.x",
+    "hot-shots": "5.x || 6.x || 7.x || 8.x || 9.x || 10.x",
     "koa": "2"
   },
   "peerDependenciesMeta": {
