@@ -17,9 +17,7 @@ export type Fields = Record<string, unknown>;
  * used to omit uninteresting headers from the request log by replacing them
  * with `undefined`.
  */
-interface HeaderReplacements {
-  [lowercaseName: string]: string | undefined;
-}
+type HeaderReplacements = Record<string, string | undefined>;
 
 // The Koala emoji should hopefully be a hint that:
 // 1. This isn't an actual value of a header
