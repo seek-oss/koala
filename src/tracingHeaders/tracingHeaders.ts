@@ -99,12 +99,12 @@ export const tracingFromContext = (ctx: Koa.Context): SEEKTracing => {
 export const outgoingHeaders = (
   appID: AppIdentifier,
   tracing: SEEKTracing,
-): { [header: string]: string } => {
+): Record<string, string> => {
   const userAgent = appID.version
     ? `${appID.name}/${appID.version}`
     : `${appID.name}`;
 
-  const headers: { [header: string]: string } = {
+  const headers: Record<string, string> = {
     'user-agent': userAgent,
     [REQUEST_ID_HEADER]: tracing.requestID,
   };

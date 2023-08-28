@@ -1,4 +1,4 @@
-type Tags = { [key: string]: string } | string[];
+type Tags = Record<string, string> | string[];
 
 /**
  * Vendored from `hot-shots.StatsD` so that TypeScript consumers are not forced
