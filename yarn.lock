@@ -1549,10 +1549,10 @@
   dependencies:
     "@types/koa" "*"
 
-"@types/koa@*", "@types/koa@2.13.8":
-  version "2.13.8"
-  resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.13.8.tgz#4302d2f2712348aadb6c0b03eb614f30afde486b"
-  integrity sha512-Ugmxmgk/yPRW3ptBTh9VjOLwsKWJuGbymo1uGX0qdaqqL18uJiiG1ZoV0rxCOYSaDGhvEp5Ece02Amx0iwaxQQ==
+"@types/koa@*", "@types/koa@2.13.9":
+  version "2.13.9"
+  resolved "https://registry.yarnpkg.com/@types/koa/-/koa-2.13.9.tgz#8d989ac17d7f033475fbe34c4f906c9287c2041a"
+  integrity sha512-tPX3cN1dGrMn+sjCDEiQqXH2AqlPoPd594S/8zxwUm/ZbPsQXKqHPUypr2gjCPhHUc+nDJLduhh5lXI/1olnGQ==
   dependencies:
     "@types/accepts" "*"
     "@types/content-disposition" "*"
@@ -1563,10 +1563,10 @@
     "@types/koa-compose" "*"
     "@types/node" "*"
 
-"@types/koa__router@12.0.0":
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/@types/koa__router/-/koa__router-12.0.0.tgz#19b0f287f9708267dfd8842feb5f2de407d93af2"
-  integrity sha512-S6eHyZyoWCZLNHyy8j0sMW85cPrpByCbGGU2/BO4IzGiI87aHJ92lZh4E9xfsM9DcbCT469/OIqyC0sSJXSIBQ==
+"@types/koa__router@12.0.1":
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/@types/koa__router/-/koa__router-12.0.1.tgz#e77b0c4081b1c56b004baf92afdd31766d5701f3"
+  integrity sha512-uqV+v6pCsfLZwK+Ar6XavKSZ6Cbsgw12bCEX9L0IKHj81LTWXcrayxJWkLtez5vOMQlq+ax+lZcuCyh9CgxYGw==
   dependencies:
     "@types/koa" "*"
 
@@ -1590,10 +1590,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.5.7.tgz#4b8ecac87fbefbc92f431d09c30e176fc0a7c377"
   integrity sha512-dP7f3LdZIysZnmvP3ANJYTSwg+wLLl8p7RqniVlV7j+oXSXAbt9h0WIBFmJy5inWZoX9wZN6eXx+YXd9Rh3RBA==
 
-"@types/node@16.18.46":
-  version "16.18.46"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.46.tgz#9f2102d0ba74a318fcbe170cbff5463f119eab59"
-  integrity sha512-Mnq3O9Xz52exs3mlxMcQuA7/9VFe/dXcrgAyfjLkABIqxXKOgBRjyazTxUbjsxDa4BP7hhPliyjVTP9RDP14xg==
+"@types/node@16.18.53":
+  version "16.18.53"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.18.53.tgz#21820fe4d5968aaf8071dabd1ee13d24ada1350a"
+  integrity sha512-vVmHeo4tpF8zsknALU90Hh24VueYdu45ZlXzYWFbom61YR4avJqTFDC3QlWzjuTdAv6/3xHaxiO9NrtVZXrkmw==
 
 "@types/normalize-package-data@^2.4.0", "@types/normalize-package-data@^2.4.1":
   version "2.4.1"
