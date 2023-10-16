@@ -190,6 +190,18 @@ export const createContextStorage = () => {
       async (ctx, next) => {
         await loggerContext.run(getFieldsFn(ctx, contextFields(ctx)), next);
       },
+
+    /**
+     * Returns the original set of fields from the logger context store.
+     *
+     * **Use with caution.** This is only necessary if your application does not
+     * have all logging fields available when the context middleware is first
+     * attached to the chain, and needs to append a logging field later in
+     * request execution.
+     *
+     */
+    getStore: loggerContext.getStore.bind(loggerContext),
+
     /**
      * Returns a shallow copy of fields from the logger context store. For performance reason we only copy the surface level fields.
      */

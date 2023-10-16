@@ -376,5 +376,40 @@ describe('RequestLogging', () => {
         'x-session-id': '8f859d2a-46a7-4b2d-992b-3da4a18b7ab5',
       });
     });
+
+    it('should allow for mutation via `getStore`', async () => {
+      const { createContextMiddleware, getStore, mixin } =
+        createContextStorage();
+
+      const contextMiddleware = createContextMiddleware();
+
+      // We need to grab the result from within the run() chain
+      let result: Fields = {};
+      const setResultMiddleware = jest.fn(async (_ctx: Context, next: Next) => {
+        const mutableFields = getStore();
+        mutableFields!.abcd = 'extra';
+        result = mixin();
+        await next();
+      });
+
+      const handler = jest.fn((ctx: Context) => {
+        ctx.status = 201;
+      });
+
+      await createAgent(contextMiddleware, setResultMiddleware, handler)
+        .post('/my/test/service')
+        .set('Authenticated-User', 'somesercret')
+        .set('user-agent', 'Safari')
+        .set('x-session-id', '8f859d2a-46a7-4b2d-992b-3da4a18b7ab5')
+        .expect(201);
+
+      expect(result).toStrictEqual({
+        abcd: 'extra',
+        method: 'POST',
+        url: '/my/test/service',
+        'x-request-id': expect.any(String),
+        'x-session-id': '8f859d2a-46a7-4b2d-992b-3da4a18b7ab5',
+      });
+    });
   });
 });
