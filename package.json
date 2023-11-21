@@ -40,7 +40,7 @@
     "@types/supertest": "2.0.14",
     "hot-shots": "10.0.0",
     "koa": "2.14.2",
-    "skuba": "7.3.0",
+    "skuba": "7.3.1",
     "supertest": "6.3.3"
   },
   "peerDependencies": {
