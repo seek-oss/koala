@@ -10,7 +10,10 @@ describe('errorMiddleware', () => {
 
   const app = new Koa().use(mockPrev).use(handle).use(mockNext);
 
-  const agent = request.agent(app.callback());
+  const agent = request.agent(
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+    app.callback(),
+  );
 
   beforeEach(() => mockPrev.mockImplementation((_, next) => next()));
 
