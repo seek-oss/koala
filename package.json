@@ -37,7 +37,7 @@
     "@types/koa": "2.13.12",
     "@types/koa__router": "12.0.4",
     "@types/node": "20.10.6",
-    "@types/supertest": "6.0.2",
+    "@types/supertest": "2.0.16",
     "hot-shots": "10.0.0",
     "koa": "2.15.0",
     "skuba": "7.3.1",
