@@ -107,7 +107,7 @@ See the [TracingHeaders add-on](../tracingHeaders/README.md) for more informatio
   "level": 30,
   "msg": "About to return Hello World!",
   "time": "2018-10-16T00:15:35.009Z",
-  "version": "abcdefg.123"
+  "version": "abcdefg.123",
 }
 ```
 
