@@ -152,6 +152,7 @@ export const createMiddleware = <StateT extends State, CustomT>(
         {
           ...(typeof err !== 'undefined' && {
             err,
+            // eslint-disable-next-line @typescript-eslint/no-base-to-string
             internalErrorString: String(err),
           }),
           latency,

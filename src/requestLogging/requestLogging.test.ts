@@ -196,7 +196,7 @@ describe('RequestLogging', () => {
       const errorHandler = jest.fn(async (ctx: Context, next: Next) => {
         try {
           await next();
-        } catch (err) {
+        } catch {
           // Nonsense status code; the caller sees this but not the middleware
           ctx.status = 418;
         }
