@@ -123,7 +123,6 @@ describe('errorMiddleware', () => {
 
   it('handles null error', async () => {
     mockNext.mockImplementation(() => {
-      /* eslint-disable-next-line no-throw-literal */
       throw null;
     });
 
@@ -132,7 +131,6 @@ describe('errorMiddleware', () => {
 
   it('handles string error', async () => {
     mockNext.mockImplementation(() => {
-      /* eslint-disable-next-line no-throw-literal */
       throw 'bad';
     });
 
