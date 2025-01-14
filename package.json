@@ -40,7 +40,7 @@
     "@types/supertest": "6.0.2",
     "hot-shots": "10.0.0",
     "koa": "2.15.3",
-    "skuba": "8.2.1",
+    "skuba": "9.1.0",
     "supertest": "7.0.0"
   },
   "peerDependencies": {
@@ -52,6 +52,7 @@
       "optional": true
     }
   },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "engines": {
     "node": ">=14.17"
   },
@@ -59,6 +60,6 @@
     "entryPoint": "src/index.ts",
     "template": null,
     "type": "package",
-    "version": "8.1.0"
+    "version": "9.1.0"
   }
 }
