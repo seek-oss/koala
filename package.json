@@ -36,15 +36,15 @@
   "devDependencies": {
     "@changesets/cli": "2.29.2",
     "@changesets/get-github-info": "0.6.0",
-    "@koa/router": "12.0.1",
-    "@types/koa": "2.13.12",
+    "@koa/router": "12.0.2",
+    "@types/koa": "2.15.0",
     "@types/koa__router": "12.0.4",
-    "@types/node": "20.10.6",
-    "@types/supertest": "2.0.16",
-    "hot-shots": "10.0.0",
-    "koa": "2.15.0",
-    "skuba": "7.3.1",
-    "supertest": "6.3.3"
+    "@types/node": "20.17.12",
+    "@types/supertest": "6.0.2",
+    "hot-shots": "10.2.1",
+    "koa": "2.15.4",
+    "skuba": "9.1.0",
+    "supertest": "7.0.0"
   },
   "peerDependencies": {
     "hot-shots": "5.x || 6.x || 7.x || 8.x || 9.x || 10.x",
@@ -55,7 +55,7 @@
       "optional": true
     }
   },
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610",
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
   "engines": {
     "node": ">=14.17"
   },
@@ -63,6 +63,6 @@
     "entryPoint": "src/index.ts",
     "template": null,
     "type": "package",
-    "version": "3.7.3"
+    "version": "9.1.0"
   }
 }

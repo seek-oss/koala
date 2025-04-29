@@ -107,7 +107,7 @@ See the [TracingHeaders add-on](../tracingHeaders/README.md) for more informatio
   "level": 30,
   "msg": "About to return Hello World!",
   "time": "2018-10-16T00:15:35.009Z",
-  "version": "abcdefg.123"
+  "version": "abcdefg.123",
 }
 ```
 
@@ -157,7 +157,7 @@ An individual request can opt out of request logs by setting a `skipRequestLoggi
 This is useful to reduce noise from health check handlers.
 
 Some headers can contain sensitive information such as JWTs or session cookies.
-By default the request log will redact the `Authorization`, `Authenticated-User`, `Cookie`, `X-SEEK-OIDC-Identity` headers to avoid sending them to third-party logging services.
+By default the request log will redact the `Authorization`, `Authenticated-User`, `Cookie`, `User-Email`, `X-Seek-Oidc-Identity` headers to avoid sending them to third-party logging services.
 The header replacements can by configured by passing a map of the lowercased header name to its replacement to `createMiddleware`.
 
 If an uncaught exception passes through the request log middleware it will attach `err.toString()` as the `internalErrorString` field.

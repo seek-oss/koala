@@ -34,6 +34,7 @@ export const SENSITIVE_HEADER_REPLACEMENTS: HeaderReplacements = {
   'authenticated-user': REDACTED_HEADER,
   authorization: REDACTED_HEADER,
   cookie: REDACTED_HEADER,
+  'user-email': REDACTED_HEADER,
   'x-seek-oidc-identity': REDACTED_HEADER,
 };
 
@@ -151,6 +152,7 @@ export const createMiddleware = <StateT extends State, CustomT>(
         {
           ...(typeof err !== 'undefined' && {
             err,
+            // eslint-disable-next-line @typescript-eslint/no-base-to-string
             internalErrorString: String(err),
           }),
           latency,
