@@ -9,7 +9,7 @@ permissions: {}
 
 jobs:
   release:
-    name: Publish & Deploy
+    name: Publish
     permissions:
       contents: write
     runs-on: ubuntu-latest
@@ -24,14 +24,17 @@ jobs:
         with:
           node-version: 22.x
 
+      - name: Set up pnpm
+        run: corepack enable pnpm
+
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Publish to npm
         uses: changesets/action@v1
         with:
-          publish: yarn release
-          version: yarn stage
+          publish: pnpm run release
+          version: pnpm run stage
         env:
           GITHUB_TOKEN: ${{ secrets.SEEK_OSS_CI_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.SEEK_OSS_CI_NPM_TOKEN }}
