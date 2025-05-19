@@ -9,7 +9,7 @@ permissions: {}
 
 jobs:
   release:
-    name: Publish & Deploy
+    name: Publish
     permissions:
       contents: write
     runs-on: ubuntu-latest
