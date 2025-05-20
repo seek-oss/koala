@@ -1,10 +1,9 @@
 # 🐨 Koa Loose Add-ons
 
-[![GitHub Release](https://github.com/seek-oss/koala/workflows/Release/badge.svg?branch=master)](https://github.com/seek-oss/koala/actions?query=workflow%3ARelease)
-[![GitHub Validate](https://github.com/seek-oss/koala/workflows/Validate/badge.svg?branch=master)](https://github.com/seek-oss/koala/actions?query=workflow%3AValidate)
-[![Node.js version](https://img.shields.io/badge/node-%3E%3D%2012.17-brightgreen)](https://nodejs.org/en/)
-[![npm package](https://img.shields.io/npm/v/seek-koala)](https://www.npmjs.com/package/seek-koala)
-[![Powered by skuba](https://img.shields.io/badge/🤿%20skuba-powered-009DC4)](https://github.com/seek-oss/skuba)
+[![Validate](https://github.com/seek-oss/koala/actions/workflows/validate.yml/badge.svg)](https://github.com/seek-oss/koala/actions/workflows/validate.yml)
+[![Release](https://github.com/seek-oss/koala/actions/workflows/release.yml/badge.svg)](https://github.com/seek-oss/koala/actions/workflows/release.yml)
+[![npm package](https://img.shields.io/npm/v/seek-koala?labelColor=cb0000&color=5b5b5b)](https://www.npmjs.com/package/seek-koala)
+[![Node.js version](https://img.shields.io/node/v/seek-koala?labelColor=5fa04e&color=5b5b5b)](https://www.npmjs.com/package/seek-koala)
 
 Koala is a collection of Koa add-ons that make it easy to follow SEEK conventions around tracing, logging and metrics.
 Refer to the [Koala manifesto](#koala-manifesto) for philosophy behind Koala.
