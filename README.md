@@ -9,7 +9,7 @@ Koala is a collection of Koa add-ons that make it easy to follow SEEK convention
 Refer to the [Koala manifesto](#koala-manifesto) for philosophy behind Koala.
 
 ```shell
-yarn add seek-koala
+pnpm add seek-koala
 ```
 
 ## Table of contents
