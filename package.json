@@ -25,7 +25,7 @@
     "build": "skuba build",
     "format": "skuba format",
     "lint": "skuba lint",
-    "release": "changeset publish",
+    "release": "pnpm build && changeset publish",
     "stage": "changeset version && yarn format",
     "test": "skuba test",
     "test:ci": "skuba test --coverage"
