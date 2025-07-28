@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 
 import type Koa from 'koa';
 
-import type { AppIdentifier } from '../types';
+import type { AppIdentifier } from '../types.js';
 
 const STATE_KEY = '__seek_koala_tracing';
 

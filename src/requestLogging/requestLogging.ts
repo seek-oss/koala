@@ -2,8 +2,8 @@ import { AsyncLocalStorage } from 'async_hooks';
 
 import type Koa from 'koa';
 
-import { thrown } from '../errorMiddleware/errorMiddleware';
-import { tracingFromContext } from '../tracingHeaders/tracingHeaders';
+import { thrown } from '../errorMiddleware/errorMiddleware.js';
+import { tracingFromContext } from '../tracingHeaders/tracingHeaders.js';
 
 /**
  * Key-value pairs of fields to log
