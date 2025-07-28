@@ -1,6 +1,6 @@
 import type Koa from 'koa';
 
-import type { StatsD } from './statsD';
+import type { StatsD } from './statsD.js';
 
 /**
  * Returns metrics tags for the passed Koa context

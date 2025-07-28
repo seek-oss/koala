@@ -1,6 +1,6 @@
 import type Koa from 'koa';
 
-import { create } from './versionMiddleware';
+import { create } from './versionMiddleware.js';
 
 describe('versionMiddleware', () => {
   it('should set headers with version when present', async () => {

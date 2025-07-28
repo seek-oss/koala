@@ -1,6 +1,6 @@
 import type Koa from 'koa';
 
-import { outgoingHeaders, tracingFromContext } from './tracingHeaders';
+import { outgoingHeaders, tracingFromContext } from './tracingHeaders.js';
 
 const mockCtxWithHeaders = (header: Record<string, string>): Koa.Context =>
   ({

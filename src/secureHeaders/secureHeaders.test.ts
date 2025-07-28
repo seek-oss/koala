@@ -1,6 +1,6 @@
 import type Koa from 'koa';
 
-import { middleware } from './secureHeaders';
+import { middleware } from './secureHeaders.js';
 
 describe('secureHeaders', () => {
   it('should set headers unconditionally', async () => {

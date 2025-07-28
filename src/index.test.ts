@@ -1,4 +1,4 @@
-import { TracingHeaders } from './index';
+import { TracingHeaders } from './index.js';
 
 describe('index', () => {
   it('should export `TracingHeaders`', () => {

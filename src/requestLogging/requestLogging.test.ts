@@ -7,7 +7,7 @@ import {
   contextFields,
   createContextStorage,
   createMiddleware,
-} from './requestLogging';
+} from './requestLogging.js';
 
 describe('RequestLogging', () => {
   const createAgent = (...middlewares: Middleware[]) => {

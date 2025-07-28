@@ -2,7 +2,7 @@ import createError from 'http-errors';
 import Koa from 'koa';
 import request from 'supertest';
 
-import { JsonResponse, handle, thrown } from './errorMiddleware';
+import { JsonResponse, handle, thrown } from './errorMiddleware.js';
 
 describe('errorMiddleware', () => {
   const mockPrev = jest.fn<unknown, [Koa.Context, Koa.Next]>();

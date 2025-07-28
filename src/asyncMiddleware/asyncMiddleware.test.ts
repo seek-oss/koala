@@ -1,6 +1,6 @@
 import type Koa from 'koa';
 
-import { lazyLoad } from './asyncMiddleware';
+import { lazyLoad } from './asyncMiddleware.js';
 
 describe('asyncMiddleware', () => {
   const makeCtx = (fields: Record<string, unknown> = {}): Koa.Context =>

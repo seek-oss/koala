@@ -1,6 +1,6 @@
 import type { StatsD as HotShotsStatsD } from 'hot-shots';
 
-import type { StatsD as VendoredStatsD } from './statsD';
+import type { StatsD as VendoredStatsD } from './statsD.js';
 
 describe('statsD', () => {
   it('accepts a hot-shots interface', () => {

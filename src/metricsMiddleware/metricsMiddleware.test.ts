@@ -1,7 +1,7 @@
 import type { StatsD } from 'hot-shots';
 import type Koa from 'koa';
 
-import { create } from './metricsMiddleware';
+import { create } from './metricsMiddleware.js';
 
 describe('metricsMiddleware', () => {
   const makeCtx = (fields: Record<string, unknown> = {}): Koa.Context =>
