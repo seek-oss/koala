@@ -42,7 +42,7 @@
     "@types/node": "22.15.33",
     "@types/supertest": "6.0.3",
     "hot-shots": "11.1.0",
-    "koa": "2.16.1",
+    "koa": "3.0.1",
     "skuba": "12.0.2",
     "supertest": "7.1.3"
   },
