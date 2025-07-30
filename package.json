@@ -1,6 +1,6 @@
 {
   "name": "seek-koala",
-  "version": "7.0.6",
+  "version": "7.1.0",
   "private": false,
   "description": "Koa add-ons for SEEK-standard tracing, logging and metrics",
   "homepage": "https://github.com/seek-oss/koala#readme",
