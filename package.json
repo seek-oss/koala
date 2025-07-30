@@ -44,7 +44,7 @@
     "hot-shots": "11.1.0",
     "koa": "3.0.1",
     "skuba": "12.0.2",
-    "supertest": "7.1.3"
+    "supertest": "7.1.4"
   },
   "peerDependencies": {
     "hot-shots": "5.x || 6.x || 7.x || 8.x || 9.x || 10.x || 11.x",
