@@ -34,14 +34,14 @@
     "http-errors": "^1.8.0"
   },
   "devDependencies": {
-    "@changesets/cli": "2.29.5",
+    "@changesets/cli": "2.29.6",
     "@changesets/get-github-info": "0.6.0",
     "@koa/router": "13.1.1",
     "@types/koa": "3.0.0",
     "@types/koa__router": "12.0.4",
     "@types/node": "22.15.33",
     "@types/supertest": "6.0.3",
-    "hot-shots": "11.1.0",
+    "hot-shots": "11.1.1",
     "koa": "3.0.1",
     "skuba": "12.1.1",
     "supertest": "7.1.4"
