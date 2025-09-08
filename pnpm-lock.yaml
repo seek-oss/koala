@@ -34,8 +34,8 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
       hot-shots:
-        specifier: 11.1.1
-        version: 11.1.1
+        specifier: 11.2.0
+        version: 11.2.0
       koa:
         specifier: 3.0.1
         version: 3.0.1
@@ -2284,8 +2284,8 @@ packages:
     resolution: {integrity: sha512-Rw/B2DNQaPBICNXEm8balFz9a6WpZrkCGpcWFpy7nCj+NyhSdqXipmfvtmWt9xGfp0wZnBxB+iVpLmQMYt47Tw==}
     engines: {node: ^18.17.0 || >=20.5.0}
 
-  hot-shots@11.1.1:
-    resolution: {integrity: sha512-r9nB3zlK5HINlNvJ87T0hvI/EckULwSkjqc09CFg054uCnLCvHNVDBgS3ruQaSlr8dh4pjyKcdJbHqEewvBjlw==}
+  hot-shots@11.2.0:
+    resolution: {integrity: sha512-cGiFSgTZtVODx0yMW67gPICgref3XuxkTMrXP0h5cSd1HHG3OG7L2C6+aW70MAtlUNl+9+DOq/xXyJUVKDyeUg==}
     engines: {node: '>=16.0.0'}
 
   html-escaper@2.0.2:
@@ -7011,7 +7011,7 @@ snapshots:
     dependencies:
       lru-cache: 10.4.3
 
-  hot-shots@11.1.1:
+  hot-shots@11.2.0:
     optionalDependencies:
       unix-dgram: 2.0.6
 
