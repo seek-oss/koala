@@ -35,6 +35,7 @@ export const SENSITIVE_HEADER_REPLACEMENTS: HeaderReplacements = {
   authorization: REDACTED_HEADER,
   cookie: REDACTED_HEADER,
   'user-email': REDACTED_HEADER,
+  'x-forwarded-id-token': REDACTED_HEADER,
   'x-seek-oidc-identity': REDACTED_HEADER,
 };
 
