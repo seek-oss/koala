@@ -1,5 +1,11 @@
 # seek-koala
 
+## 7.1.1
+
+### Patch Changes
+
+- **RequestLogging:** Redact `X-Forwarded-Id-Token` header ([#322](https://github.com/seek-oss/koala/pull/322))
+
 ## 7.1.0
 
 ### Minor Changes
