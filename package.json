@@ -43,7 +43,7 @@
     "@types/supertest": "6.0.3",
     "hot-shots": "11.2.0",
     "koa": "3.0.1",
-    "skuba": "12.4.1",
+    "skuba": "13.0.2",
     "supertest": "7.1.4"
   },
   "peerDependencies": {
@@ -63,6 +63,6 @@
     "entryPoint": "src/index.ts",
     "template": null,
     "type": "package",
-    "version": "12.4.1"
+    "version": "13.0.2"
   }
 }
