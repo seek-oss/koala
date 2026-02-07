@@ -57,12 +57,12 @@
   },
   "packageManager": "pnpm@10.26.2",
   "engines": {
-    "node": ">=14.17"
+    "node": ">=22.14.0"
   },
   "skuba": {
     "entryPoint": "src/index.ts",
     "template": null,
     "type": "package",
-    "version": "13.0.2"
+    "version": "14.1.0"
   }
 }
