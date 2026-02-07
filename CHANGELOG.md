@@ -1,5 +1,11 @@
 # seek-koala
 
+## 7.1.2
+
+### Patch Changes
+
+- Publish with provenance ([#332](https://github.com/seek-oss/koala/pull/332))
+
 ## 7.1.1
 
 ### Patch Changes
