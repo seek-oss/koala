@@ -10,8 +10,6 @@ minimumReleaseAgeExclude:
   - skuba
   - skuba-dive
   - tsconfig-seek
-  # Renovate security update: koa@3.1.2
-  - koa@3.1.2
 packageManagerStrictVersion: true
 publicHoistPattern:
   - '@eslint/*'
