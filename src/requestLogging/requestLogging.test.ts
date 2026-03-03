@@ -1,4 +1,4 @@
-import Router, { type Middleware } from '@koa/router';
+import Router, { type RouterMiddleware } from '@koa/router';
 import Koa, { type Context, type Next } from 'koa';
 import request from 'supertest';
 
@@ -10,7 +10,7 @@ import {
 } from './requestLogging.js';
 
 describe('RequestLogging', () => {
-  const createAgent = (...middlewares: Middleware[]) => {
+  const createAgent = (...middlewares: RouterMiddleware[]) => {
     const app = new Koa();
 
     for (const middleware of middlewares) {

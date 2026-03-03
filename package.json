@@ -36,18 +36,18 @@
   "devDependencies": {
     "@changesets/cli": "2.29.8",
     "@changesets/get-github-info": "0.7.0",
-    "@koa/router": "13.1.1",
+    "@koa/router": "15.3.1",
     "@types/koa": "3.0.1",
     "@types/koa__router": "12.0.5",
     "@types/node": "22.19.12",
     "@types/supertest": "6.0.3",
-    "hot-shots": "12.1.0",
+    "hot-shots": "14.0.0",
     "koa": "3.1.2",
     "skuba": "14.1.1",
     "supertest": "7.2.2"
   },
   "peerDependencies": {
-    "hot-shots": "5.x || 6.x || 7.x || 8.x || 9.x || 10.x || 11.x || 14.x",
+    "hot-shots": "5.x || 6.x || 7.x || 8.x || 9.x || 10.x || 11.x || 12.x || 13.x || 14.x",
     "koa": "2 || 3"
   },
   "peerDependenciesMeta": {
