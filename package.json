@@ -28,7 +28,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "skuba build",
+    "build": "skuba build-package",
     "format": "skuba format",
     "lint": "skuba lint",
     "release": "pnpm build && changeset publish",
