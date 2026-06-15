@@ -42,7 +42,6 @@
   },
   "devDependencies": {
     "@changesets/cli": "2.30.0",
-    "@changesets/get-github-info": "0.8.0",
     "@koa/router": "15.4.0",
     "@skuba-lib/changesets-changelog": "1.0.1",
     "@types/koa": "3.0.2",
