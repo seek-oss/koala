@@ -1,4 +1,5 @@
 import type { StatsD as HotShotsStatsD } from 'hot-shots';
+import { describe, expect, it } from 'vitest';
 
 import type { StatsD as VendoredStatsD } from './statsD.js';
 

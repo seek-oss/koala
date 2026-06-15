@@ -1,13 +1,14 @@
 import type Koa from 'koa';
+import { describe, expect, it, vi } from 'vitest';
 
 import { create } from './versionMiddleware.js';
 
 describe('versionMiddleware', () => {
   it('should set headers with version when present', async () => {
     const mockCtx = {
-      set: jest.fn(),
+      set: vi.fn(),
     } as unknown as Koa.Context;
-    const mockNext = jest.fn();
+    const mockNext = vi.fn();
 
     const appID = {
       name: 'seek-example-app',
@@ -25,9 +26,9 @@ describe('versionMiddleware', () => {
 
   it('should set headers without a version', async () => {
     const mockCtx = {
-      set: jest.fn(),
+      set: vi.fn(),
     } as unknown as Koa.Context;
-    const mockNext = jest.fn();
+    const mockNext = vi.fn();
 
     const appID = {
       name: 'seek-example-app',

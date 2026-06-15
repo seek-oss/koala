@@ -1,6 +1,7 @@
 import Router, { type RouterMiddleware } from '@koa/router';
 import Koa, { type Context, type Next } from 'koa';
 import request from 'supertest';
+import { describe, expect, it, vi } from 'vitest';
 
 import {
   type Fields,
@@ -22,7 +23,7 @@ describe('RequestLogging', () => {
 
   describe('contextFields', () => {
     it('returns request information for a vanilla handler', () => {
-      const handler = jest.fn((ctx: Context) => {
+      const handler = vi.fn((ctx: Context) => {
         ctx.status = 200;
         ctx.body = 'hello';
 
@@ -54,7 +55,7 @@ describe('RequestLogging', () => {
       const router = new Router().get(
         'getRoute',
         '/route/:segment',
-        jest.fn((ctx: Context) => {
+        vi.fn((ctx: Context) => {
           ctx.status = 200;
           ctx.body = 'hello';
 
@@ -87,7 +88,7 @@ describe('RequestLogging', () => {
       const router = new Router().get(
         'getRoute',
         '/route/:segment',
-        jest.fn((ctx: Context) => {
+        vi.fn((ctx: Context) => {
           ctx.status = 200;
           ctx.body = 'hello';
 
@@ -121,11 +122,11 @@ describe('RequestLogging', () => {
 
   describe('createMiddleware', () => {
     it('logs a successful request', async () => {
-      const handler = jest.fn((ctx: Context) => {
+      const handler = vi.fn((ctx: Context) => {
         ctx.status = 201;
       });
 
-      const logMock = jest.fn();
+      const logMock = vi.fn();
 
       const middleware = createMiddleware(logMock);
 
@@ -171,12 +172,12 @@ describe('RequestLogging', () => {
     });
 
     it('skips logging if the handler requests it', async () => {
-      const handler = jest.fn((ctx: Context) => {
+      const handler = vi.fn((ctx: Context) => {
         ctx.status = 201;
         ctx.state.skipRequestLogging = true;
       });
 
-      const logMock = jest.fn();
+      const logMock = vi.fn();
 
       const middleware = createMiddleware(logMock);
 
@@ -193,7 +194,7 @@ describe('RequestLogging', () => {
       const expectedError = Error('Something tragic happened');
 
       // Avoid `console.error` logging
-      const errorHandler = jest.fn(async (ctx: Context, next: Next) => {
+      const errorHandler = vi.fn(async (ctx: Context, next: Next) => {
         try {
           await next();
         } catch {
@@ -202,11 +203,11 @@ describe('RequestLogging', () => {
         }
       });
 
-      const handler = jest.fn(() => {
+      const handler = vi.fn(() => {
         throw expectedError;
       });
 
-      const logMock = jest.fn();
+      const logMock = vi.fn();
 
       // Do not redact authorization
       const headerReplacements = {
@@ -285,12 +286,12 @@ describe('RequestLogging', () => {
 
       // We need to grab the result from within the run() chain
       let result: Fields = {};
-      const setResultMiddleware = jest.fn(async (_ctx: Context, next: Next) => {
+      const setResultMiddleware = vi.fn(async (_ctx: Context, next: Next) => {
         result = mixin();
         await next();
       });
 
-      const handler = jest.fn((ctx: Context) => {
+      const handler = vi.fn((ctx: Context) => {
         ctx.status = 201;
       });
 
@@ -319,12 +320,12 @@ describe('RequestLogging', () => {
 
       // We need to grab the result from within the run() chain
       let result: Fields = {};
-      const setResultMiddleware = jest.fn(async (_ctx: Context, next: Next) => {
+      const setResultMiddleware = vi.fn(async (_ctx: Context, next: Next) => {
         result = mixin();
         await next();
       });
 
-      const handler = jest.fn((ctx: Context) => {
+      const handler = vi.fn((ctx: Context) => {
         ctx.status = 201;
       });
 
@@ -351,14 +352,14 @@ describe('RequestLogging', () => {
 
       // We need to grab the result from within the run() chain
       let result: Fields = {};
-      const setResultMiddleware = jest.fn(async (_ctx: Context, next: Next) => {
+      const setResultMiddleware = vi.fn(async (_ctx: Context, next: Next) => {
         const tempResult = mixin();
         tempResult.abcd = 'extra';
         result = mixin();
         await next();
       });
 
-      const handler = jest.fn((ctx: Context) => {
+      const handler = vi.fn((ctx: Context) => {
         ctx.status = 201;
       });
 

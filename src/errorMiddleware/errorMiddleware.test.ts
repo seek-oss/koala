@@ -1,21 +1,28 @@
 import createError from 'http-errors';
 import Koa from 'koa';
 import request from 'supertest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { JsonResponse, handle, thrown } from './errorMiddleware.js';
 
 describe('errorMiddleware', () => {
-  const mockPrev = jest.fn<unknown, [Koa.Context, Koa.Next]>();
-  const mockNext = jest.fn<unknown, [Koa.Context, Koa.Next]>();
+  const mockPrev = vi.fn<(...args: [Koa.Context, Koa.Next]) => unknown>();
+  const mockNext = vi.fn<(...args: [Koa.Context, Koa.Next]) => unknown>();
 
   const app = new Koa().use(mockPrev).use(handle).use(mockNext);
 
   const agent = request.agent(app.callback());
 
-  beforeEach(() => mockPrev.mockImplementation((_, next) => next()));
+  beforeEach(() => {
+    mockPrev.mockImplementation((_, next) => next());
+  });
 
-  afterEach(mockPrev.mockReset);
-  afterEach(mockNext.mockReset);
+  afterEach(() => {
+    mockPrev.mockReset();
+  });
+  afterEach(() => {
+    mockNext.mockReset();
+  });
 
   it('passes through a returned 2xx', async () => {
     mockNext.mockImplementation((ctx) => {
