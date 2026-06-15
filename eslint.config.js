@@ -1,1 +1,1 @@
-export { default } from 'skuba/config/eslint';
+export { default } from 'skuba/config/eslint.js';
