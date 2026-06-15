@@ -138,7 +138,7 @@ describe('RequestLogging', () => {
 
       expect(logMock).toHaveBeenCalledTimes(1);
 
-      const [, fields, err] = logMock.mock.calls[0];
+      const [, fields, err] = logMock.mock.calls[0]!;
 
       expect(fields).toMatchInlineSnapshot(
         {
@@ -227,7 +227,7 @@ describe('RequestLogging', () => {
 
       expect(logMock).toHaveBeenCalledTimes(1);
 
-      const [, fields, err] = logMock.mock.calls[0];
+      const [, fields, err] = logMock.mock.calls[0]!;
 
       expect(fields).toMatchInlineSnapshot(
         {
