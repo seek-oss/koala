@@ -1,5 +1,6 @@
 import type { StatsD } from 'hot-shots';
 import type Koa from 'koa';
+import { describe, expect, it, vi } from 'vitest';
 
 import { create } from './metricsMiddleware.js';
 
@@ -12,7 +13,7 @@ describe('metricsMiddleware', () => {
     }) as unknown as Koa.Context;
 
   it('should record metrics for a successful request', async () => {
-    const mockDistribution = jest.fn();
+    const mockDistribution = vi.fn();
     const mockMetricsClient = {
       distribution: mockDistribution,
     } as unknown as StatsD;
@@ -20,7 +21,7 @@ describe('metricsMiddleware', () => {
     const tagsForContext = () => ({});
 
     const mockCtx: Koa.Context = makeCtx({ method: 'POST' });
-    const mockNext = jest.fn().mockImplementation(() => {
+    const mockNext = vi.fn().mockImplementation(() => {
       mockCtx.status = 201;
     });
 
@@ -42,7 +43,7 @@ describe('metricsMiddleware', () => {
   });
 
   it('should record metrics for a failed request', async () => {
-    const mockDistribution = jest.fn();
+    const mockDistribution = vi.fn();
     const mockMetricsClient = {
       distribution: mockDistribution,
     } as unknown as StatsD;
@@ -52,7 +53,7 @@ describe('metricsMiddleware', () => {
     });
 
     const mockCtx: Koa.Context = makeCtx();
-    const mockNext = jest.fn().mockImplementation(() => {
+    const mockNext = vi.fn().mockImplementation(() => {
       mockCtx.status = 302;
       throw new Error('Internal failure!');
     });
@@ -77,7 +78,7 @@ describe('metricsMiddleware', () => {
   });
 
   it('should skip recording if the handler requests it', async () => {
-    const mockDistribution = jest.fn();
+    const mockDistribution = vi.fn();
     const mockMetricsClient = {
       distribution: mockDistribution,
     } as unknown as StatsD;
@@ -85,7 +86,7 @@ describe('metricsMiddleware', () => {
     const tagsForContext = () => ({});
 
     const mockCtx: Koa.Context = makeCtx();
-    const mockNext = jest.fn().mockImplementation(() => {
+    const mockNext = vi.fn().mockImplementation(() => {
       mockCtx.state.skipRequestLogging = true;
     });
 

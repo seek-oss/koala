@@ -11,6 +11,6 @@ export default defineConfig({
   },
   publint: true,
   attw: true,
-  unbundle: true, // TODO: determine if your project can be bundled
   exports: { devExports: '@seek/koala/source' },
+  sourcemap: true,
 });

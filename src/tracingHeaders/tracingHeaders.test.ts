@@ -1,4 +1,5 @@
 import type Koa from 'koa';
+import { describe, expect, it } from 'vitest';
 
 import { outgoingHeaders, tracingFromContext } from './tracingHeaders.js';
 

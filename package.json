@@ -13,6 +13,7 @@
   },
   "license": "MIT",
   "sideEffects": false,
+  "type": "module",
   "exports": {
     ".": {
       "@seek/koala/source": "./src/index.ts",
@@ -41,15 +42,15 @@
   },
   "devDependencies": {
     "@changesets/cli": "2.30.0",
-    "@changesets/get-github-info": "0.8.0",
     "@koa/router": "15.4.0",
+    "@skuba-lib/changesets-changelog": "1.0.1",
     "@types/koa": "3.0.2",
     "@types/koa__router": "12.0.5",
     "@types/node": "24.12.4",
     "@types/supertest": "7.2.0",
     "hot-shots": "14.2.0",
     "koa": "3.2.0",
-    "skuba": "15.3.0",
+    "skuba": "16.1.0",
     "supertest": "7.2.2"
   },
   "peerDependencies": {
@@ -78,6 +79,6 @@
     "entryPoint": "src/index.ts",
     "template": null,
     "type": "package",
-    "version": "15.3.0"
+    "version": "16.1.0"
   }
 }

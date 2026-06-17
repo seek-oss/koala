@@ -1,13 +1,14 @@
 import type Koa from 'koa';
+import { describe, expect, it, vi } from 'vitest';
 
 import { middleware } from './secureHeaders.js';
 
 describe('secureHeaders', () => {
   it('should set headers unconditionally', async () => {
     const mockCtx = {
-      set: jest.fn(),
+      set: vi.fn(),
     } as unknown as Koa.Context;
-    const mockNext = jest.fn();
+    const mockNext = vi.fn();
 
     await middleware(mockCtx, mockNext);
 
