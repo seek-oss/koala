@@ -10,7 +10,9 @@ export default defineConfig({
     legacyCjs: false,
   },
   publint: true,
-  attw: true,
+  attw: {
+    profile: 'node16',
+  },
   exports: { devExports: '@seek/koala/source' },
   sourcemap: true,
 });

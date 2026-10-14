@@ -7,13 +7,19 @@
   "bugs": {
     "url": "https://github.com/seek-oss/koala/issues"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/seek-oss/koala.git"
   },
-  "license": "MIT",
-  "sideEffects": false,
+  "files": [
+    "lib"
+  ],
   "type": "module",
+  "sideEffects": false,
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.mjs",
+  "types": "./lib/index.d.cts",
   "exports": {
     ".": {
       "@seek/koala/source": "./src/index.ts",
@@ -22,12 +28,15 @@
     },
     "./package.json": "./package.json"
   },
-  "main": "./lib/index.cjs",
-  "module": "./lib/index.mjs",
-  "types": "./lib/index.d.cts",
-  "files": [
-    "lib"
-  ],
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "import": "./lib/index.mjs",
+        "require": "./lib/index.cjs"
+      },
+      "./package.json": "./package.json"
+    }
+  },
   "scripts": {
     "build": "skuba build-package",
     "format": "skuba format",
@@ -62,23 +71,14 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@10.33.0",
   "engines": {
     "node": ">=22.14.0"
   },
-  "publishConfig": {
-    "exports": {
-      ".": {
-        "import": "./lib/index.mjs",
-        "require": "./lib/index.cjs"
-      },
-      "./package.json": "./package.json"
-    }
-  },
+  "packageManager": "pnpm@11.28.2",
   "skuba": {
     "entryPoint": "src/index.ts",
     "template": null,
     "type": "package",
-    "version": "16.3.0"
+    "version": "16.4.0"
   }
 }
