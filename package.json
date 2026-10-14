@@ -1,6 +1,6 @@
 {
   "name": "seek-koala",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "private": false,
   "description": "Koa add-ons for SEEK-standard tracing, logging and metrics",
   "homepage": "https://github.com/seek-oss/koala#readme",
@@ -79,6 +79,6 @@
     "entryPoint": "src/index.ts",
     "template": null,
     "type": "package",
-    "version": "16.2.0"
+    "version": "16.3.0"
   }
 }
