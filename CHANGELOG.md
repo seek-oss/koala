@@ -1,5 +1,11 @@
 # seek-koala
 
+## 9.0.1
+
+### Patch Changes
+
+- Allow hot-shots 17.x in peer deps ([#387](https://github.com/seek-oss/koala/pull/387))
+
 ## 9.0.0
 
 ### Major Changes
